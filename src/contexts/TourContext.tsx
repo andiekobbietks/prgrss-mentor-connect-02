@@ -25,7 +25,7 @@ export const tourSteps: TourStep[] = [
   {
     id: 'welcome',
     title: 'Welcome to PRGRSS!',
-    description: 'Connect with corporate mentors through micro-mentorship sessions. Let's show you around!',
+    description: 'Connect with corporate mentors through micro-mentorship sessions. Let\'s show you around!',
   },
   {
     id: 'navigation',
