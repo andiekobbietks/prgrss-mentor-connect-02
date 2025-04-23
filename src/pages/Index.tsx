@@ -1,12 +1,96 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { Settings, Home as HomeIcon, Users, Calendar } from "lucide-react";
+import React, { useState } from "react";
 
 const Index = () => {
+  const [tooltipShown, setTooltipShown] = useState(true);
+
+  const cardData = [
+    {
+      title: "PARTNER",
+      subtitle: "ZEBRA",
+      description: "Zebra is a world leader in innovative digital solutions, hardware and softwar...",
+      image: "/lovable-uploads/5c8929ae-5ec6-4ae4-98c3-d516bc8a4794.png"
+    },
+    {
+      publisher: "GPE",
+      title: "HOW TO BE A GOOD MENTEE",
+      description: "Maximize your mentoring journey! Learn how to be proactive, open to feedback, and respectful, while building strong connections and achieving your professional goals.",
+    }
+  ];
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-background text-foreground relative">
+      {/* Logo and Settings */}
+      <div className="flex justify-between items-center p-6">
+        <h1 className="text-2xl font-bold tracking-wider">PRGRSS</h1>
+        <Settings className="w-6 h-6" />
       </div>
+
+      {/* Cards Container */}
+      <div className="px-4 space-y-4">
+        {cardData.map((card, index) => (
+          <div 
+            key={index}
+            className="relative overflow-hidden rounded-xl bg-card p-6"
+          >
+            {card.publisher && (
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
+                <div>
+                  <p className="text-sm opacity-70">PUBLISHED BY</p>
+                  <p className="text-accent">{card.publisher}</p>
+                </div>
+              </div>
+            )}
+            {card.title && (
+              <>
+                {card.subtitle && (
+                  <p className="text-accent mb-2">
+                    {card.subtitle}
+                  </p>
+                )}
+                <h2 className="text-xl font-bold mb-2">
+                  {card.title}
+                </h2>
+              </>
+            )}
+            <p className="text-sm opacity-80">
+              {card.description}
+            </p>
+            <button 
+              className="absolute bottom-4 right-4 bg-secondary/30 p-2 rounded-full"
+              aria-label="Learn more"
+            >
+              <span className="text-accent">→</span>
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-muted p-4">
+        <div className="flex justify-between items-center max-w-md mx-auto">
+          <HomeIcon className="w-6 h-6 text-accent" />
+          <Users className="w-6 h-6 text-muted-foreground" />
+          <div className="w-6 h-6 rounded-full bg-muted-foreground" />
+          <Calendar className="w-6 h-6 text-muted-foreground" />
+        </div>
+      </nav>
+
+      {/* Tooltip */}
+      {tooltipShown && (
+        <div className="fixed bottom-20 left-4 right-4 bg-accent text-white p-4 rounded-lg shadow-lg animate-fade-in">
+          <h3 className="font-bold mb-2">Welcome to PRGRSS!</h3>
+          <p className="text-sm mb-4">Explore mentorship opportunities and connect with industry leaders.</p>
+          <button 
+            onClick={() => setTooltipShown(false)}
+            className="text-sm underline"
+          >
+            Got it
+          </button>
+        </div>
+      )}
     </div>
   );
 };
