@@ -1,10 +1,10 @@
+
 import React from "react";
-import { Settings, Home as HomeIcon, Users, MessageCircle } from "lucide-react";
+import { Settings, Home as HomeIcon, Users, Calendar, Info, MessageCircle } from "lucide-react";
 import { useTour } from "@/contexts/TourContext";
 import { TourTarget } from "@/components/TourTarget";
 import { TourOverlay } from "@/components/TourOverlay";
 import { HintTrigger } from "@/components/HintTrigger";
-import { Link } from "react-router-dom";
 
 const Index = () => {
   const { startTour } = useTour();
@@ -24,16 +24,14 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen pb-16 bg-background text-foreground relative">
+    <div className="min-h-screen bg-background text-foreground relative">
       {/* Logo and Settings */}
       <div className="flex justify-between items-center p-6">
         <TourTarget id="welcome-logo" className="flex items-center">
           <h1 className="text-2xl font-bold tracking-wider">PRGRSS</h1>
           <HintTrigger stepId="welcome" className="ml-2" />
         </TourTarget>
-        <Link to="/settings">
-          <Settings className="w-6 h-6" />
-        </Link>
+        <Settings className="w-6 h-6" />
       </div>
 
       {/* Cards Container */}
@@ -104,21 +102,19 @@ const Index = () => {
         </TourTarget>
       </div>
 
-      {/* Fixed Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-[#2A2A2A] p-4">
-        <div className="flex justify-between items-center max-w-md mx-auto">
-          <Link to="/" className="flex flex-col items-center">
-            <HomeIcon className="w-6 h-6 text-[#E5B884]" />
-          </Link>
-          <Link to="/profile" className="flex flex-col items-center">
-            <Users className="w-6 h-6 text-white/60" />
-          </Link>
-          <div className="w-6 h-6 bg-white/60 rounded-full"></div>
-          <Link to="/chat" className="flex flex-col items-center">
-            <MessageCircle className="w-6 h-6 text-white/60" />
-          </Link>
-        </div>
-      </nav>
+      {/* Bottom Navigation */}
+      <TourTarget id="navigation-tabs" className="fixed bottom-0 left-0 right-0 bg-background border-t border-muted p-4">
+        <nav className="flex justify-between items-center max-w-md mx-auto">
+          <HomeIcon className="w-6 h-6 text-accent" />
+          <TourTarget id="profile-icon">
+            <Users className="w-6 h-6 text-muted-foreground" />
+          </TourTarget>
+          <div className="w-6 h-6 rounded-full bg-muted-foreground" />
+          <TourTarget id="messaging-icon">
+            <MessageCircle className="w-6 h-6 text-muted-foreground" />
+          </TourTarget>
+        </nav>
+      </TourTarget>
 
       {/* Tour Overlay - will only show when tour is active */}
       <TourOverlay />
