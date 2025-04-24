@@ -1,17 +1,20 @@
 
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { Home, User, Users, Calendar, MessageSquare, Settings } from "lucide-react";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { Home, Users, User, Calendar, MessageSquare, Settings } from "lucide-react";
 
 export default function AppLayout() {
+  const location = useLocation();
+  
   return (
-    <div className="relative flex flex-col min-h-screen bg-black text-white">
+    <div className="relative min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="flex justify-between items-center p-4">
+      <header className="flex justify-between items-center p-6">
+        <div className="flex-1" /> {/* Spacer */}
         <div className="flex items-center">
-          <h1 className="text-2xl font-bold tracking-wider">PRGR<span className="text-gray-500">SS</span></h1>
+          <h1 className="text-2xl tracking-wider font-light">PRGRSS</h1>
         </div>
-        <div>
+        <div className="flex-1 flex justify-end">
           <Link to="/settings">
             <Settings className="text-white h-6 w-6" />
           </Link>
@@ -19,29 +22,29 @@ export default function AppLayout() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto pb-16">
+      <main className="flex-1 pb-20">
         <Outlet />
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 py-3">
-        <div className="flex justify-around items-center">
-          <Link to="/" className="flex flex-col items-center">
-            <Home className="h-6 w-6 text-white" />
+      <nav className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-lg border-t border-white/10 py-4">
+        <div className="flex justify-around items-center px-6">
+          <Link to="/">
+            <Home className={`nav-icon ${location.pathname === '/' ? 'active' : ''}`} />
           </Link>
-          <Link to="/community" className="flex flex-col items-center">
-            <Users className="h-6 w-6 text-gray-500" />
+          <Link to="/community">
+            <Users className={`nav-icon ${location.pathname === '/community' ? 'active' : ''}`} />
           </Link>
-          <Link to="/profile" className="flex flex-col items-center">
-            <div className="bg-primary rounded-full p-3 -mt-8">
-              <User className="h-6 w-6 text-white" />
+          <Link to="/profile" className="relative -mt-8">
+            <div className="bg-accent rounded-full p-4">
+              <User className="h-6 w-6 text-black" />
             </div>
           </Link>
-          <Link to="/call-history" className="flex flex-col items-center">
-            <Calendar className="h-6 w-6 text-gray-500" />
+          <Link to="/call-history">
+            <Calendar className={`nav-icon ${location.pathname === '/call-history' ? 'active' : ''}`} />
           </Link>
-          <Link to="/chat" className="flex flex-col items-center">
-            <MessageSquare className="h-6 w-6 text-gray-500" />
+          <Link to="/chat">
+            <MessageSquare className={`nav-icon ${location.pathname === '/chat' ? 'active' : ''}`} />
           </Link>
         </div>
       </nav>
