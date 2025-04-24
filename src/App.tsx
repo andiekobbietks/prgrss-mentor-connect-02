@@ -25,6 +25,7 @@ const App = () => (
             <Route path="/chat" element={<Chat />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/call-history" element={<CallHistory />} />
+            <Route path="/profile" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
