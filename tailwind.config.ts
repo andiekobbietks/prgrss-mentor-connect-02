@@ -17,20 +17,24 @@ export default {
         ring: "hsl(var(--ring))",
         background: "#000000",
         foreground: "#FFFFFF",
-        primary: "#FFFFFF",
-        "primary-foreground": "#000000",
-        secondary: "#1A1F2C",
-        "secondary-foreground": "#FFFFFF",
-        accent: {
-          DEFAULT: "#9b87f5",
+        primary: {
+          DEFAULT: "#E5B884",
+          foreground: "#000000",
+        },
+        secondary: {
+          DEFAULT: "#2A2A2A",
           foreground: "#FFFFFF",
+        },
+        accent: {
+          DEFAULT: "#E5B884",
+          foreground: "#000000",
         },
         muted: {
           DEFAULT: "#333333",
           foreground: "#888888",
         },
         card: {
-          DEFAULT: "rgba(255, 255, 255, 0.1)",
+          DEFAULT: "rgba(42, 42, 42, 0.8)",
           foreground: "#FFFFFF",
         },
       },
