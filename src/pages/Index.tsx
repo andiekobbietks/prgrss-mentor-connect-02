@@ -1,9 +1,8 @@
 
 import React from "react";
-import { Settings, Home as HomeIcon, Users, Calendar, Info, MessageCircle } from "lucide-react";
+import { Info } from "lucide-react";
 import { useTour } from "@/contexts/TourContext";
 import { TourTarget } from "@/components/TourTarget";
-import { TourOverlay } from "@/components/TourOverlay";
 import { HintTrigger } from "@/components/HintTrigger";
 
 const Index = () => {
@@ -31,7 +30,6 @@ const Index = () => {
           <h1 className="text-2xl font-bold tracking-wider">PRGRSS</h1>
           <HintTrigger stepId="welcome" className="ml-2" />
         </TourTarget>
-        <Settings className="w-6 h-6" />
       </div>
 
       {/* Cards Container */}
@@ -95,29 +93,12 @@ const Index = () => {
 
         {/* Feedback Button */}
         <TourTarget id="feedback-button" className="mt-8 mb-16 flex justify-center">
-          <button className="bg-accent text-white px-5 py-2 rounded-full flex items-center gap-2">
+          <button className="bg-accent text-black px-5 py-2 rounded-full flex items-center gap-2">
             <Info className="w-4 h-4" />
             <span>Share feedback</span>
           </button>
         </TourTarget>
       </div>
-
-      {/* Bottom Navigation */}
-      <TourTarget id="navigation-tabs" className="fixed bottom-0 left-0 right-0 bg-background border-t border-muted p-4">
-        <nav className="flex justify-between items-center max-w-md mx-auto">
-          <HomeIcon className="w-6 h-6 text-accent" />
-          <TourTarget id="profile-icon">
-            <Users className="w-6 h-6 text-muted-foreground" />
-          </TourTarget>
-          <div className="w-6 h-6 rounded-full bg-muted-foreground" />
-          <TourTarget id="messaging-icon">
-            <MessageCircle className="w-6 h-6 text-muted-foreground" />
-          </TourTarget>
-        </nav>
-      </TourTarget>
-
-      {/* Tour Overlay - will only show when tour is active */}
-      <TourOverlay />
     </div>
   );
 };

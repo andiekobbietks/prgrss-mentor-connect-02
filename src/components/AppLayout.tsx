@@ -2,6 +2,8 @@
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Home, Users, User, Calendar, MessageSquare, Settings } from "lucide-react";
+import { TourTarget } from "./TourTarget";
+import { TourOverlay } from "./TourOverlay";
 
 export default function AppLayout() {
   const location = useLocation();
@@ -27,7 +29,7 @@ export default function AppLayout() {
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-lg border-t border-white/10 py-4">
+      <TourTarget id="navigation-tabs" className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-lg border-t border-white/10 py-4">
         <div className="flex justify-around items-center px-6">
           <Link to="/">
             <Home className={`nav-icon ${location.pathname === '/' ? 'active' : ''}`} />
@@ -35,19 +37,26 @@ export default function AppLayout() {
           <Link to="/community">
             <Users className={`nav-icon ${location.pathname === '/community' ? 'active' : ''}`} />
           </Link>
-          <Link to="/profile" className="relative -mt-8">
-            <div className="bg-accent rounded-full p-4">
-              <User className="h-6 w-6 text-black" />
-            </div>
-          </Link>
+          <TourTarget id="profile-icon" className="relative -mt-8">
+            <Link to="/profile">
+              <div className="bg-accent rounded-full p-4">
+                <User className="h-6 w-6 text-black" />
+              </div>
+            </Link>
+          </TourTarget>
           <Link to="/call-history">
             <Calendar className={`nav-icon ${location.pathname === '/call-history' ? 'active' : ''}`} />
           </Link>
-          <Link to="/chat">
-            <MessageSquare className={`nav-icon ${location.pathname === '/chat' ? 'active' : ''}`} />
-          </Link>
+          <TourTarget id="messaging-icon">
+            <Link to="/chat">
+              <MessageSquare className={`nav-icon ${location.pathname === '/chat' ? 'active' : ''}`} />
+            </Link>
+          </TourTarget>
         </div>
-      </nav>
+      </TourTarget>
+
+      {/* Tour Overlay - will be visible when tour is active */}
+      <TourOverlay />
     </div>
   );
 }
