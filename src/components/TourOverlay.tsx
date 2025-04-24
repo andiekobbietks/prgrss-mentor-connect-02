@@ -1,14 +1,10 @@
-
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { TourOverlayProps } from '@/types/TourTypes';
 import { useTour } from '@/contexts/TourContext';
 import { HintContent } from '@/components/HintContent';
 import { useSwipeable } from 'react-swipeable';
 import { motion, AnimatePresence } from 'framer-motion';
-
-interface TourOverlayProps {
-  className?: string;
-}
 
 export function TourOverlay({ className = '' }: TourOverlayProps) {
   const { isOpen, currentStep, steps, targetRefs, nextStep, previousStep } = useTour();
@@ -16,7 +12,6 @@ export function TourOverlay({ className = '' }: TourOverlayProps) {
   const [overlayHeight, setOverlayHeight] = useState(0);
   const [overlayWidth, setOverlayWidth] = useState(0);
 
-  // Setup swipe handlers for accessibility
   const swipeHandlers = useSwipeable({
     onSwipedLeft: nextStep,
     onSwipedRight: previousStep,
@@ -24,7 +19,6 @@ export function TourOverlay({ className = '' }: TourOverlayProps) {
     trackMouse: true
   });
 
-  // Update overlay size
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setOverlayHeight(window.innerHeight);
@@ -40,7 +34,6 @@ export function TourOverlay({ className = '' }: TourOverlayProps) {
     }
   }, []);
 
-  // Calculate position for current step
   useEffect(() => {
     if (isOpen && steps[currentStep]?.targetId) {
       const targetId = steps[currentStep].targetId;
@@ -48,7 +41,7 @@ export function TourOverlay({ className = '' }: TourOverlayProps) {
       
       if (targetRef?.current) {
         const rect = targetRef.current.getBoundingClientRect();
-        const safeArea = 20; // Safe area around the target
+        const safeArea = 20;
         
         setPosition({
           top: rect.top - safeArea,
@@ -60,7 +53,6 @@ export function TourOverlay({ className = '' }: TourOverlayProps) {
     }
   }, [isOpen, currentStep, steps, targetRefs]);
 
-  // Handle keyboard navigation for accessibility
   useEffect(() => {
     if (!isOpen) return;
     
@@ -87,17 +79,14 @@ export function TourOverlay({ className = '' }: TourOverlayProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, nextStep, previousStep]);
 
-  // Don't render if not open
   if (!isOpen) return null;
 
-  // Create the cutout style that follows iOS coach marks style
   const maskStyle = {
     width: `${overlayWidth}px`,
     height: `${overlayHeight}px`,
     maskImage: `radial-gradient(circle at ${position.left + position.width/2}px ${position.top + position.height/2}px, transparent ${Math.max(position.width, position.height)/2}px, black ${Math.max(position.width, position.height)/2 + 1}px)`
   };
 
-  // Calculate optimal position for the hint relative to target
   const placement = steps[currentStep]?.placement || 'bottom';
   const hintPosition = {
     top: 0,
@@ -106,24 +95,23 @@ export function TourOverlay({ className = '' }: TourOverlayProps) {
 
   switch (placement) {
     case 'top':
-      hintPosition.top = position.top - 120; // Above the target
-      hintPosition.left = position.left + (position.width / 2) - 150; // Centered horizontally
+      hintPosition.top = position.top - 120;
+      hintPosition.left = position.left + (position.width / 2) - 150;
       break;
     case 'bottom':
-      hintPosition.top = position.top + position.height + 20; // Below the target
-      hintPosition.left = position.left + (position.width / 2) - 150; // Centered horizontally
+      hintPosition.top = position.top + position.height + 20;
+      hintPosition.left = position.left + (position.width / 2) - 150;
       break;
     case 'left':
-      hintPosition.top = position.top + (position.height / 2) - 80; // Centered vertically
-      hintPosition.left = position.left - 320; // To the left of the target
+      hintPosition.top = position.top + (position.height / 2) - 80;
+      hintPosition.left = position.left - 320;
       break;
     case 'right':
-      hintPosition.top = position.top + (position.height / 2) - 80; // Centered vertically
-      hintPosition.left = position.left + position.width + 20; // To the right of the target
+      hintPosition.top = position.top + (position.height / 2) - 80;
+      hintPosition.left = position.left + position.width + 20;
       break;
   }
 
-  // Ensure the hint stays within viewport bounds
   hintPosition.left = Math.max(20, Math.min(hintPosition.left, overlayWidth - 320));
   hintPosition.top = Math.max(20, Math.min(hintPosition.top, overlayHeight - 160));
 
