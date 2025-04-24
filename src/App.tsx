@@ -1,36 +1,38 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { TourProvider } from "@/contexts/TourContext";
-import Index from "./pages/Index";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// Layouts
+import AppLayout from "./components/AppLayout";
+
+// Pages
+import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import CallHistory from "./pages/CallHistory";
 import Chat from "./pages/Chat";
 import Settings from "./pages/Settings";
-import CallHistory from "./pages/CallHistory";
 
-const queryClient = new QueryClient();
+// Styles
+import "./App.css";
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <TourProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/call-history" element={<CallHistory />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TourProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  useEffect(() => {
+    document.body.classList.add("bg-black");
+  }, []);
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<AppLayout />}>
+          <Route index element={<Home />} />
+          <Route path="call-history" element={<CallHistory />} />
+          <Route path="chat" element={<Chat />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
+}
 
 export default App;
