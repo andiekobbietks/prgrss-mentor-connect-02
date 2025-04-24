@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { TourOverlayProps } from '@/types/TourTypes';
@@ -7,7 +8,7 @@ import { useSwipeable } from 'react-swipeable';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function TourOverlay({ className = '' }: TourOverlayProps) {
-  const { isOpen, currentStep, steps, targetRefs, nextStep, previousStep } = useTour();
+  const { isOpen, currentStep, steps, targetRefs, nextStep, previousStep, endTour } = useTour();
   const [position, setPosition] = useState({ top: 0, left: 0, width: 0, height: 0 });
   const [overlayHeight, setOverlayHeight] = useState(0);
   const [overlayWidth, setOverlayWidth] = useState(0);
@@ -68,7 +69,6 @@ export function TourOverlay({ className = '' }: TourOverlayProps) {
           e.preventDefault();
           break;
         case 'Escape':
-          const { endTour } = useTour();
           endTour();
           e.preventDefault();
           break;
@@ -77,7 +77,7 @@ export function TourOverlay({ className = '' }: TourOverlayProps) {
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, nextStep, previousStep]);
+  }, [isOpen, nextStep, previousStep, endTour]);
 
   if (!isOpen) return null;
 
