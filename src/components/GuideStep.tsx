@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { TourTarget } from './TourTarget';
 import { HintTrigger } from './HintTrigger';
+import StepNumber from './guide/StepNumber';
 
 interface GuideStepProps {
   number: number;
@@ -19,11 +20,7 @@ const GuideStep = ({ number, title, description, tourId }: GuideStepProps) => {
       transition={{ delay: 0.1 * number }}
       className="flex gap-4 mb-6 group"
     >
-      <div className="flex-shrink-0">
-        <div className="w-10 h-10 bg-accent text-black rounded-full flex items-center justify-center font-bold shadow-lg shadow-accent/20 transition-transform group-hover:scale-110">
-          {number}
-        </div>
-      </div>
+      <StepNumber number={number} />
       <div className="flex-grow">
         <div className="flex items-center">
           <h3 className="font-semibold text-lg mb-2 text-white group-hover:text-accent transition-colors">{title}</h3>
