@@ -1,11 +1,21 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTour } from '@/contexts/TourContext';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 
 export function SplashScreen() {
   const { startTour, goToGuide, showStartScreen, setShowStartScreen, setIsFirstVisit } = useTour();
+  
+  useEffect(() => {
+    // Check if the user has completed the tour before
+    const tourCompleted = localStorage.getItem('prgrss-tour-completed');
+    
+    // If they have, don't show the splash screen
+    if (tourCompleted === 'true') {
+      setShowStartScreen(false);
+    }
+  }, [setShowStartScreen]);
   
   if (!showStartScreen) return null;
   

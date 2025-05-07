@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import AppLayout from './components/AppLayout';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
@@ -10,12 +10,28 @@ import Community from './pages/Community';
 import CallHistory from './pages/CallHistory';
 import NotFound from './pages/NotFound';
 import UserGuide from './pages/UserGuide';
-import { TourProvider } from './contexts/TourContext';
+import { TourProvider, useTour } from './contexts/TourContext';
 import { TourOverlay } from './components/TourOverlay';
 import { SplashScreen } from './components/SplashScreen';
 import './App.css';
 
-function AppWithProviders() {
+function AppContent() {
+  const location = useLocation();
+  const { isFirstVisit, showStartScreen } = useTour();
+  
+  useEffect(() => {
+    // Add special class to body when splash screen is shown
+    if (showStartScreen) {
+      document.body.classList.add('splash-active');
+    } else {
+      document.body.classList.remove('splash-active');
+    }
+    
+    return () => {
+      document.body.classList.remove('splash-active');
+    };
+  }, [showStartScreen]);
+
   return (
     <>
       <Routes>
@@ -40,7 +56,7 @@ function App() {
   return (
     <Router>
       <TourProvider>
-        <AppWithProviders />
+        <AppContent />
       </TourProvider>
     </Router>
   );

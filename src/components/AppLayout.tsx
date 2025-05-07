@@ -9,7 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 export default function AppLayout() {
   const location = useLocation();
-  const { startTour } = useTour();
+  const { startTour, isFirstVisit } = useTour();
   
   return (
     <div className="relative min-h-screen bg-black text-white">
@@ -54,10 +54,10 @@ export default function AppLayout() {
       <TourTarget id="navigation-tabs" className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-lg border-t border-white/10 py-4">
         <div className="flex justify-around items-center px-6">
           <Link to="/">
-            <Home className={`nav-icon ${location.pathname === '/' ? 'active' : ''}`} />
+            <Home className={`h-6 w-6 ${location.pathname === '/' ? 'text-accent' : 'text-gray-400'}`} />
           </Link>
           <Link to="/community">
-            <Users className={`nav-icon ${location.pathname === '/community' ? 'active' : ''}`} />
+            <Users className={`h-6 w-6 ${location.pathname === '/community' ? 'text-accent' : 'text-gray-400'}`} />
           </Link>
           <TourTarget id="profile-icon" className="relative -mt-8">
             <Link to="/profile">
@@ -68,12 +68,12 @@ export default function AppLayout() {
           </TourTarget>
           <TourTarget id="calls-info">
             <Link to="/call-history">
-              <Calendar className={`nav-icon ${location.pathname === '/call-history' ? 'active' : ''}`} />
+              <Calendar className={`h-6 w-6 ${location.pathname === '/call-history' ? 'text-accent' : 'text-gray-400'}`} />
             </Link>
           </TourTarget>
           <TourTarget id="messaging-icon">
             <Link to="/chat">
-              <MessageSquare className={`nav-icon ${location.pathname === '/chat' ? 'active' : ''}`} />
+              <MessageSquare className={`h-6 w-6 ${location.pathname === '/chat' ? 'text-accent' : 'text-gray-400'}`} />
             </Link>
           </TourTarget>
         </div>

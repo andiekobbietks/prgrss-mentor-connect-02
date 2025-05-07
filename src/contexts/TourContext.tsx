@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -54,7 +53,14 @@ export const tourSteps: TourStep[] = [
   {
     id: 'messaging',
     title: 'In-App Messaging',
-    description: 'Keep all communications within the app. Message limits vary based on scheduled meetings.',
+    description: 'Messaging is only available after booking or completing a call. Message limits vary based on your relationship status.',
+    placement: 'left',
+    targetId: 'messaging-icon'
+  },
+  {
+    id: 'messaging-limits',
+    title: 'Messaging Limitations',
+    description: 'After a completed call: 5 messages/day. Upcoming call within 7 days: 3 messages/day. No scheduled calls: Mentors 1 message/day, Mentees 3 messages/day only after mentor contact.',
     placement: 'left',
     targetId: 'messaging-icon'
   },
@@ -66,9 +72,30 @@ export const tourSteps: TourStep[] = [
     targetId: 'profile-icon'
   },
   {
-    id: 'limitations',
-    title: 'Platform Guidelines',
-    description: 'The platform has specific limits on call bookings, messaging, and scheduling to ensure quality interactions.',
+    id: 'call-limitations',
+    title: 'Call Booking Limits',
+    description: 'Mentors can have up to 3 calls per month (customizable 2-10). Mentees are limited to 2 calls per month.',
+    placement: 'bottom',
+    targetId: 'calls-info'
+  },
+  {
+    id: 'reschedule-limits',
+    title: 'Rescheduling Rules',
+    description: 'Mentors can reschedule up to 5 times per month. Mentees are limited to 2 reschedules per month.',
+    placement: 'bottom',
+    targetId: 'calls-info'
+  },
+  {
+    id: 'call-join-rules',
+    title: 'Joining Call Sessions',
+    description: 'You can join 15 seconds before call time and up to 5 minutes after. After that, access is denied and counts as a no-show.',
+    placement: 'bottom',
+    targetId: 'calls-info'
+  },
+  {
+    id: 'no-show-policy',
+    title: 'No-Show Policy',
+    description: 'Mentors with 2 no-shows in 30 days are blocked for 30 days. Mentees with 1 no-show in 60 days are blocked for 60 days.',
     placement: 'bottom',
     targetId: 'calls-info'
   },
@@ -108,7 +135,12 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
     setCurrentStep(0);
     setIsOpen(true);
     setShowStartScreen(false);
-  }, []);
+    
+    // Navigate to home page when starting tour if not already there
+    if (location.pathname !== '/') {
+      navigate('/');
+    }
+  }, [navigate, location.pathname]);
 
   const endTour = useCallback(() => {
     setIsOpen(false);
@@ -121,10 +153,15 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const nextStep = useCallback(() => {
     if (currentStep < tourSteps.length - 1) {
       setCurrentStep(currentStep + 1);
+      
+      // Navigate to profile page when reaching feedback step
+      if (currentStep === tourSteps.length - 2) {
+        navigate('/profile');
+      }
     } else {
       endTour();
     }
-  }, [currentStep, endTour]);
+  }, [currentStep, endTour, navigate]);
 
   const previousStep = useCallback(() => {
     if (currentStep > 0) {
