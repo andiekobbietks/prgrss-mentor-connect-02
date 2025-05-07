@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/tabs';
 import GuideSection from '../components/GuideSection';
+import { Calendar, MessageSquare, Clock } from 'lucide-react';
 
 const UserGuide = () => {
   const [activeTab, setActiveTab] = useState('mentors');
@@ -38,6 +39,37 @@ const UserGuide = () => {
     { description: "Calls must be joined within the first 5 minutes." }
   ];
 
+  const mentorLimitations = [
+    {
+      title: "Call Booking & Management",
+      icon: <Calendar className="h-5 w-5 text-primary" />,
+      items: [
+        { label: "Monthly call limit", value: "3-10 calls" },
+        { label: "Maximum reschedules", value: "5 per month" },
+        { label: "Maximum cancellations", value: "4 per month" },
+        { label: "No-show policy", value: "Blocked for 30 days after 2 no-shows" }
+      ]
+    },
+    {
+      title: "Messaging Limitations",
+      icon: <MessageSquare className="h-5 w-5 text-primary" />,
+      items: [
+        { label: "After completed meeting (3 days)", value: "5 messages per day" },
+        { label: "Upcoming meeting (next 7 days)", value: "3 messages per day" },
+        { label: "No meetings scheduled", value: "1 message per day" },
+        { label: "Meeting beyond next 7 days", value: "No messages allowed" }
+      ]
+    },
+    {
+      title: "Call Session Rules",
+      icon: <Clock className="h-5 w-5 text-primary" />,
+      items: [
+        { label: "Earliest join time", value: "15 seconds before call" },
+        { label: "Latest join time", value: "5 minutes after call starts" }
+      ]
+    }
+  ];
+
   const menteeSteps = [
     {
       title: "Welcome to the Platform",
@@ -68,6 +100,37 @@ const UserGuide = () => {
   const menteeRules = [
     { description: "Two no-shows will pause your access to scheduling for one month." },
     { description: "Join your call within the first 5 minutes." }
+  ];
+
+  const menteeLimitations = [
+    {
+      title: "Call Booking & Management",
+      icon: <Calendar className="h-5 w-5 text-primary" />,
+      items: [
+        { label: "Monthly call limit", value: "2 calls" },
+        { label: "Maximum reschedules", value: "2 per month" },
+        { label: "Maximum cancellations", value: "2 per month" },
+        { label: "No-show policy", value: "Blocked for 60 days after 1 no-show" }
+      ]
+    },
+    {
+      title: "Messaging Limitations",
+      icon: <MessageSquare className="h-5 w-5 text-primary" />,
+      items: [
+        { label: "After completed meeting (3 days)", value: "5 messages per day" },
+        { label: "Upcoming meeting (next 7 days)", value: "3 messages per day" },
+        { label: "If mentor messaged in last 3 days", value: "3 messages per day" },
+        { label: "Meeting beyond next 7 days", value: "No messages allowed" }
+      ]
+    },
+    {
+      title: "Call Session Rules",
+      icon: <Clock className="h-5 w-5 text-primary" />,
+      items: [
+        { label: "Earliest join time", value: "15 seconds before call" },
+        { label: "Latest join time", value: "5 minutes after call starts" }
+      ]
+    }
   ];
 
   return (
@@ -101,6 +164,7 @@ const UserGuide = () => {
               title="Guide for Mentors"
               steps={mentorSteps}
               rules={mentorRules}
+              limitations={mentorLimitations}
             />
           </TabsContent>
 
@@ -109,6 +173,7 @@ const UserGuide = () => {
               title="Guide for Mentees"
               steps={menteeSteps}
               rules={menteeRules}
+              limitations={menteeLimitations}
             />
           </TabsContent>
         </Tabs>
