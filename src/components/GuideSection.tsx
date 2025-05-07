@@ -12,6 +12,7 @@ interface GuideSectionProps {
   steps: {
     title: string;
     description: string;
+    tourId?: string;
   }[];
   rules: GuideRule[];
 }
@@ -28,6 +29,7 @@ const GuideSection = ({ title, steps, rules }: GuideSectionProps) => {
             number={index + 1}
             title={step.title}
             description={step.description}
+            tourId={step.tourId}
           />
         ))}
       </div>
