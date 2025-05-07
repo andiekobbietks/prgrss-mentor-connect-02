@@ -5,6 +5,7 @@ import GuideSection from '../components/GuideSection';
 import { Calendar, MessageSquare, Clock, Info } from 'lucide-react';
 import { useTour } from '@/contexts/TourContext';
 import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 
 const UserGuide = () => {
   const [activeTab, setActiveTab] = useState('mentors');
@@ -49,7 +50,7 @@ const UserGuide = () => {
   const mentorLimitations = [
     {
       title: "Call Booking & Management",
-      icon: <Calendar className="h-5 w-5 text-primary" />,
+      icon: <Calendar className="h-5 w-5 text-accent" />,
       items: [
         { label: "Monthly call limit", value: "3-10 calls" },
         { label: "Maximum reschedules", value: "5 per month" },
@@ -59,7 +60,7 @@ const UserGuide = () => {
     },
     {
       title: "Messaging Limitations",
-      icon: <MessageSquare className="h-5 w-5 text-primary" />,
+      icon: <MessageSquare className="h-5 w-5 text-accent" />,
       items: [
         { label: "After completed meeting (3 days)", value: "5 messages per day" },
         { label: "Upcoming meeting (next 7 days)", value: "3 messages per day" },
@@ -69,7 +70,7 @@ const UserGuide = () => {
     },
     {
       title: "Call Session Rules",
-      icon: <Clock className="h-5 w-5 text-primary" />,
+      icon: <Clock className="h-5 w-5 text-accent" />,
       items: [
         { label: "Earliest join time", value: "15 seconds before call" },
         { label: "Latest join time", value: "5 minutes after call starts" }
@@ -117,7 +118,7 @@ const UserGuide = () => {
   const menteeLimitations = [
     {
       title: "Call Booking & Management",
-      icon: <Calendar className="h-5 w-5 text-primary" />,
+      icon: <Calendar className="h-5 w-5 text-accent" />,
       items: [
         { label: "Monthly call limit", value: "2 calls" },
         { label: "Maximum reschedules", value: "2 per month" },
@@ -127,7 +128,7 @@ const UserGuide = () => {
     },
     {
       title: "Messaging Limitations",
-      icon: <MessageSquare className="h-5 w-5 text-primary" />,
+      icon: <MessageSquare className="h-5 w-5 text-accent" />,
       items: [
         { label: "After completed meeting (3 days)", value: "5 messages per day" },
         { label: "Upcoming meeting (next 7 days)", value: "3 messages per day" },
@@ -137,7 +138,7 @@ const UserGuide = () => {
     },
     {
       title: "Call Session Rules",
-      icon: <Clock className="h-5 w-5 text-primary" />,
+      icon: <Clock className="h-5 w-5 text-accent" />,
       items: [
         { label: "Earliest join time", value: "15 seconds before call" },
         { label: "Latest join time", value: "5 minutes after call starts" }
@@ -146,59 +147,85 @@ const UserGuide = () => {
   ];
 
   return (
-    <div className="container max-w-3xl px-4 py-6 md:py-10">
-      <h1 className="text-2xl md:text-3xl font-bold text-center mb-4">PRGRSS User Guide</h1>
-      <p className="text-center text-gray-600 mb-4">
-        This guide will help you get started with PRGRSS, whether you're a mentor or mentee.
-      </p>
-      
-      <div className="flex justify-center mb-6">
-        <Button 
-          onClick={startTour}
-          className="bg-accent hover:bg-accent/80 text-black flex items-center gap-2"
+    <div className="min-h-screen bg-black">
+      <div className="container max-w-3xl px-4 py-8 md:py-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-center mb-8"
         >
-          <Info className="h-4 w-4" />
-          Take Interactive Tour
-        </Button>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
-        <Tabs defaultValue="mentors" className="w-full" onValueChange={setActiveTab}>
-          <div className="border-b">
-            <TabsList className="w-full grid grid-cols-2 bg-gray-50">
-              <TabsTrigger
-                value="mentors"
-                className={`py-3 text-base ${activeTab === 'mentors' ? 'font-medium text-primary' : 'text-gray-600'}`}
-              >
-                For Mentors
-              </TabsTrigger>
-              <TabsTrigger
-                value="mentees"
-                className={`py-3 text-base ${activeTab === 'mentees' ? 'font-medium text-primary' : 'text-gray-600'}`}
-              >
-                For Mentees
-              </TabsTrigger>
-            </TabsList>
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">PRGRSS User Guide</h1>
+          <p className="text-gray-400 max-w-xl mx-auto">
+            This guide will help you get started with PRGRSS, whether you're a mentor or mentee.
+          </p>
+          
+          <div className="flex justify-center mt-6">
+            <Button 
+              onClick={startTour}
+              className="bg-accent hover:bg-accent/90 text-black flex items-center gap-2 transition-all transform hover:scale-105"
+            >
+              <Info className="h-4 w-4" />
+              Take Interactive Tour
+            </Button>
           </div>
+        </motion.div>
 
-          <TabsContent value="mentors" className="pt-2 pb-6">
-            <GuideSection
-              title="Guide for Mentors"
-              steps={mentorSteps}
-              rules={mentorRules}
-              limitations={mentorLimitations}
-            />
-          </TabsContent>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="backdrop-blur-sm bg-secondary/40 rounded-xl border border-white/10 shadow-lg overflow-hidden"
+        >
+          <Tabs defaultValue="mentors" className="w-full" onValueChange={setActiveTab}>
+            <div className="border-b border-white/10">
+              <TabsList className="w-full grid grid-cols-2 bg-black/40">
+                <TabsTrigger
+                  value="mentors"
+                  className={`py-4 text-base font-medium transition-colors ${
+                    activeTab === 'mentors' 
+                      ? 'text-accent' 
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  For Mentors
+                </TabsTrigger>
+                <TabsTrigger
+                  value="mentees"
+                  className={`py-4 text-base font-medium transition-colors ${
+                    activeTab === 'mentees' 
+                      ? 'text-accent' 
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  For Mentees
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
-          <TabsContent value="mentees" className="pt-2 pb-6">
-            <GuideSection
-              title="Guide for Mentees"
-              steps={menteeSteps}
-              rules={menteeRules}
-              limitations={menteeLimitations}
-            />
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="mentors" className="pt-2 pb-6">
+              <GuideSection
+                title="Guide for Mentors"
+                steps={mentorSteps}
+                rules={mentorRules}
+                limitations={mentorLimitations}
+              />
+            </TabsContent>
+
+            <TabsContent value="mentees" className="pt-2 pb-6">
+              <GuideSection
+                title="Guide for Mentees"
+                steps={menteeSteps}
+                rules={menteeRules}
+                limitations={menteeLimitations}
+              />
+            </TabsContent>
+          </Tabs>
+        </motion.div>
+        
+        <div className="mt-8 text-center text-xs text-gray-500">
+          © 2025 PRGRSS. All rights reserved.
+        </div>
       </div>
     </div>
   );
