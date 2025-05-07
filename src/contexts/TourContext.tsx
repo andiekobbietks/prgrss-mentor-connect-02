@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 type TourStep = {
   id: string;
@@ -90,13 +90,14 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const [showStartScreen, setShowStartScreen] = useState(true);
   const [targetRefs] = useState<Map<string, React.RefObject<HTMLElement>>>(new Map());
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Check if this is the first visit
     const tourCompleted = localStorage.getItem(TOUR_COMPLETED_KEY);
     if (!tourCompleted) {
       setIsFirstVisit(true);
-      // Don't auto-start tour, we'll use the splash screen instead
+      setShowStartScreen(true);
     } else {
       setIsFirstVisit(false);
       setShowStartScreen(false);

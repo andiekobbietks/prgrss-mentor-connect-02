@@ -1,20 +1,42 @@
 
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { Home, Users, User, Calendar, MessageSquare, Settings } from "lucide-react";
+import { Home, Users, User, Calendar, MessageSquare, Settings, Info } from "lucide-react";
 import { TourTarget } from "./TourTarget";
 import { TourOverlay } from "./TourOverlay";
+import { useTour } from "@/contexts/TourContext";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function AppLayout() {
   const location = useLocation();
+  const { startTour } = useTour();
   
   return (
     <div className="relative min-h-screen bg-black text-white">
       {/* Header */}
       <header className="flex justify-between items-center p-6">
-        <div className="flex-1" /> {/* Spacer */}
+        <div className="flex-1">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button 
+                  onClick={startTour} 
+                  className="text-gray-400 hover:text-accent p-2 rounded-full hover:bg-accent/10 transition-colors"
+                  aria-label="Restart Tour"
+                >
+                  <Info className="h-5 w-5" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Restart Tour</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
         <div className="flex items-center">
-          <h1 className="text-2xl tracking-wider font-light">PRGRSS</h1>
+          <TourTarget id="welcome-logo">
+            <h1 className="text-2xl tracking-wider font-light">PRGRSS</h1>
+          </TourTarget>
         </div>
         <div className="flex-1 flex justify-end">
           <Link to="/settings">
@@ -44,9 +66,11 @@ export default function AppLayout() {
               </div>
             </Link>
           </TourTarget>
-          <Link to="/call-history">
-            <Calendar className={`nav-icon ${location.pathname === '/call-history' ? 'active' : ''}`} />
-          </Link>
+          <TourTarget id="calls-info">
+            <Link to="/call-history">
+              <Calendar className={`nav-icon ${location.pathname === '/call-history' ? 'active' : ''}`} />
+            </Link>
+          </TourTarget>
           <TourTarget id="messaging-icon">
             <Link to="/chat">
               <MessageSquare className={`nav-icon ${location.pathname === '/chat' ? 'active' : ''}`} />
@@ -54,9 +78,6 @@ export default function AppLayout() {
           </TourTarget>
         </div>
       </TourTarget>
-
-      {/* Tour Overlay - will be visible when tour is active */}
-      <TourOverlay />
     </div>
   );
 }

@@ -5,9 +5,15 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 
 export function SplashScreen() {
-  const { startTour, goToGuide, showStartScreen } = useTour();
+  const { startTour, goToGuide, showStartScreen, setShowStartScreen, setIsFirstVisit } = useTour();
   
   if (!showStartScreen) return null;
+  
+  const handleSkip = () => {
+    setShowStartScreen(false);
+    setIsFirstVisit(false);
+    localStorage.setItem('prgrss-tour-completed', 'true');
+  };
   
   return (
     <motion.div 
@@ -50,12 +56,7 @@ export function SplashScreen() {
           </Button>
           
           <button 
-            onClick={() => {
-              const { setShowStartScreen, setIsFirstVisit } = useTour();
-              setShowStartScreen(false);
-              setIsFirstVisit(false);
-              localStorage.setItem('prgrss-tour-completed', 'true');
-            }}
+            onClick={handleSkip}
             className="text-gray-500 hover:text-gray-400 text-sm mt-8"
           >
             Skip for now

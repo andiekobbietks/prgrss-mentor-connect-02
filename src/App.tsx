@@ -17,7 +17,7 @@ import './App.css';
 
 function AppWithProviders() {
   return (
-    <TourProvider>
+    <>
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
@@ -32,14 +32,16 @@ function AppWithProviders() {
       </Routes>
       <TourOverlay />
       <SplashScreen />
-    </TourProvider>
+    </>
   );
 }
 
 function App() {
   return (
     <Router>
-      <AppWithProviders />
+      <TourProvider>
+        <AppWithProviders />
+      </TourProvider>
     </Router>
   );
 }
