@@ -1,5 +1,6 @@
 
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type TourStep = {
   id: string;
@@ -22,6 +23,9 @@ type TourContextType = {
   registerTarget: (id: string, ref: React.RefObject<HTMLElement>) => void;
   isFirstVisit: boolean;
   setIsFirstVisit: (value: boolean) => void;
+  showStartScreen: boolean;
+  setShowStartScreen: (value: boolean) => void;
+  goToGuide: () => void;
 };
 
 const TourContext = createContext<TourContextType | null>(null);
@@ -50,16 +54,23 @@ export const tourSteps: TourStep[] = [
   {
     id: 'messaging',
     title: 'In-App Messaging',
-    description: 'Keep all communications within the app for your safety. This helps us maintain a secure environment for everyone.',
+    description: 'Keep all communications within the app. Message limits vary based on scheduled meetings.',
     placement: 'left',
     targetId: 'messaging-icon'
   },
   {
-    id: 'safety',
-    title: 'Your Safety Matters',
-    description: 'All profiles are verified. If you have concerns, use our in-app reporting feature to alert our safeguarding team.',
+    id: 'profile',
+    title: 'Your Profile',
+    description: 'All profiles are verified. Complete your profile to be matched with the right mentors or mentees.',
     placement: 'right',
     targetId: 'profile-icon'
+  },
+  {
+    id: 'limitations',
+    title: 'Platform Guidelines',
+    description: 'The platform has specific limits on call bookings, messaging, and scheduling to ensure quality interactions.',
+    placement: 'bottom',
+    targetId: 'calls-info'
   },
   {
     id: 'feedback',
@@ -76,53 +87,58 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [isFirstVisit, setIsFirstVisit] = useState(true);
+  const [showStartScreen, setShowStartScreen] = useState(true);
   const [targetRefs] = useState<Map<string, React.RefObject<HTMLElement>>>(new Map());
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if this is the first visit
     const tourCompleted = localStorage.getItem(TOUR_COMPLETED_KEY);
     if (!tourCompleted) {
       setIsFirstVisit(true);
-      // Auto-start tour for first-time visitors after a small delay
-      const timer = setTimeout(() => {
-        startTour();
-      }, 1000);
-      return () => clearTimeout(timer);
+      // Don't auto-start tour, we'll use the splash screen instead
     } else {
       setIsFirstVisit(false);
+      setShowStartScreen(false);
     }
   }, []);
 
-  const startTour = () => {
+  const startTour = useCallback(() => {
     setCurrentStep(0);
     setIsOpen(true);
-  };
+    setShowStartScreen(false);
+  }, []);
 
-  const endTour = () => {
+  const endTour = useCallback(() => {
     setIsOpen(false);
     setCurrentStep(0);
     // Mark tour as completed
     localStorage.setItem(TOUR_COMPLETED_KEY, 'true');
     setIsFirstVisit(false);
-  };
+  }, []);
 
-  const nextStep = () => {
+  const nextStep = useCallback(() => {
     if (currentStep < tourSteps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
       endTour();
     }
-  };
+  }, [currentStep, endTour]);
 
-  const previousStep = () => {
+  const previousStep = useCallback(() => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
-  };
+  }, [currentStep]);
 
-  const registerTarget = (id: string, ref: React.RefObject<HTMLElement>) => {
+  const registerTarget = useCallback((id: string, ref: React.RefObject<HTMLElement>) => {
     targetRefs.set(id, ref);
-  };
+  }, [targetRefs]);
+
+  const goToGuide = useCallback(() => {
+    endTour();
+    navigate('/guide');
+  }, [endTour, navigate]);
 
   return (
     <TourContext.Provider
@@ -139,6 +155,9 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
         registerTarget,
         isFirstVisit,
         setIsFirstVisit,
+        showStartScreen,
+        setShowStartScreen,
+        goToGuide,
       }}
     >
       {children}

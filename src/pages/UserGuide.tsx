@@ -2,19 +2,24 @@
 import React, { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/tabs';
 import GuideSection from '../components/GuideSection';
-import { Calendar, MessageSquare, Clock } from 'lucide-react';
+import { Calendar, MessageSquare, Clock, Info } from 'lucide-react';
+import { useTour } from '@/contexts/TourContext';
+import { Button } from '@/components/ui/button';
 
 const UserGuide = () => {
   const [activeTab, setActiveTab] = useState('mentors');
+  const { startTour } = useTour();
   
   const mentorSteps = [
     {
       title: "Welcome to the Platform",
-      description: "Welcome to PRGRSS! You're now part of a mission to guide and empower the next generation of diverse talent."
+      description: "Welcome to PRGRSS! You're now part of a mission to guide and empower the next generation of diverse talent.",
+      tourId: "welcome"
     },
     {
       title: "Sync Your Calendar",
-      description: "To get started, sync your calendar to allow smooth scheduling of your availability and calls."
+      description: "To get started, sync your calendar to allow smooth scheduling of your availability and calls.",
+      tourId: "calls"
     },
     {
       title: "Set Your Availability",
@@ -22,11 +27,13 @@ const UserGuide = () => {
     },
     {
       title: "Join Your Call",
-      description: "On the day of your scheduled call, go to your dashboard and select 'Join Call'. Calls can only be joined within the first 5 minutes."
+      description: "On the day of your scheduled call, go to your dashboard and select 'Join Call'. Calls can only be joined within the first 5 minutes.",
+      tourId: "calls"
     },
     {
       title: "Provide Feedback",
-      description: "After the session, submit feedback about your experience. This helps us support you and the mentee better."
+      description: "After the session, submit feedback about your experience. This helps us support you and the mentee better.",
+      tourId: "feedback"
     },
     {
       title: "Update Your Availability",
@@ -73,15 +80,18 @@ const UserGuide = () => {
   const menteeSteps = [
     {
       title: "Welcome to the Platform",
-      description: "Welcome to PRGRSS! Your journey to personal growth and career development begins now."
+      description: "Welcome to PRGRSS! Your journey to personal growth and career development begins now.",
+      tourId: "welcome"
     },
     {
       title: "Review Your Mentor Matches",
-      description: "Check out your mentor recommendations based on your goals and background."
+      description: "Check out your mentor recommendations based on your goals and background.",
+      tourId: "profile"
     },
     {
       title: "Book Your Monthly Calls",
-      description: "Schedule up to 2 calls per month. Use these wisely and come prepared."
+      description: "Schedule up to 2 calls per month. Use these wisely and come prepared.",
+      tourId: "calls"
     },
     {
       title: "Prepare and Join the Call",
@@ -89,11 +99,13 @@ const UserGuide = () => {
     },
     {
       title: "Provide Feedback",
-      description: "Share feedback after your call. It helps us and your mentor improve your experience."
+      description: "Share feedback after your call. It helps us and your mentor improve your experience.",
+      tourId: "feedback"
     },
     {
       title: "Code of Conduct",
-      description: "Contacting mentors outside of PRGRSS is not allowed. Respect your mentor's time and commitment."
+      description: "Contacting mentors outside of PRGRSS is not allowed. Respect your mentor's time and commitment.",
+      tourId: "messaging"
     }
   ];
 
@@ -135,10 +147,20 @@ const UserGuide = () => {
 
   return (
     <div className="container max-w-3xl px-4 py-6 md:py-10">
-      <h1 className="text-2xl md:text-3xl font-bold text-center mb-8">PRGRSS User Guide</h1>
-      <p className="text-center text-gray-600 mb-8">
+      <h1 className="text-2xl md:text-3xl font-bold text-center mb-4">PRGRSS User Guide</h1>
+      <p className="text-center text-gray-600 mb-4">
         This guide will help you get started with PRGRSS, whether you're a mentor or mentee.
       </p>
+      
+      <div className="flex justify-center mb-6">
+        <Button 
+          onClick={startTour}
+          className="bg-accent hover:bg-accent/80 text-black flex items-center gap-2"
+        >
+          <Info className="h-4 w-4" />
+          Take Interactive Tour
+        </Button>
+      </div>
 
       <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
         <Tabs defaultValue="mentors" className="w-full" onValueChange={setActiveTab}>

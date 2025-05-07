@@ -3,14 +3,14 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useTour } from '@/contexts/TourContext';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, BookOpen } from 'lucide-react';
 
 interface HintContentProps {
   arrowPlacement?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 export function HintContent({ arrowPlacement }: HintContentProps) {
-  const { currentStep, steps, nextStep, previousStep, endTour } = useTour();
+  const { currentStep, steps, nextStep, previousStep, endTour, goToGuide } = useTour();
   const step = steps[currentStep];
 
   const renderArrow = () => {
@@ -35,41 +35,54 @@ export function HintContent({ arrowPlacement }: HintContentProps) {
       <CardContent>
         <p className="text-sm text-gray-300">{step.description}</p>
       </CardContent>
-      <CardFooter className="flex justify-between pb-4 pt-2">
-        <div className="flex gap-2 items-center">
+      <CardFooter className="flex flex-col pb-4 pt-2">
+        <div className="flex justify-between w-full mb-2">
+          <div className="flex gap-2 items-center">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={previousStep}
+              disabled={currentStep === 0}
+              className="h-8 p-0 w-8 rounded-full text-accent hover:bg-accent/10 disabled:opacity-50"
+              aria-label="Previous step"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            
+            <span className="text-xs text-gray-400" aria-live="polite">
+              {currentStep + 1} of {steps.length}
+            </span>
+            
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={nextStep}
+              className="h-8 p-0 w-8 rounded-full text-accent hover:bg-accent/10"
+              aria-label={currentStep === steps.length - 1 ? "Finish tour" : "Next step"}
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
+          </div>
+          
           <Button 
             variant="ghost" 
             size="sm" 
-            onClick={previousStep}
-            disabled={currentStep === 0}
-            className="h-8 p-0 w-8 rounded-full text-accent hover:bg-accent/10 disabled:opacity-50"
-            aria-label="Previous step"
+            onClick={endTour}
+            className="h-8 p-1 rounded-full text-gray-400 hover:text-accent hover:bg-accent/10"
+            aria-label="Skip tour"
           >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
-          
-          <span className="text-xs text-gray-400" aria-live="polite">
-            {currentStep + 1} of {steps.length}
-          </span>
-          
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={nextStep}
-            className="h-8 p-0 w-8 rounded-full text-accent hover:bg-accent/10"
-            aria-label={currentStep === steps.length - 1 ? "Finish tour" : "Next step"}
-          >
-            <ChevronRight className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </Button>
         </div>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={endTour}
-          className="h-8 p-1 rounded-full text-gray-400 hover:text-accent hover:bg-accent/10"
-          aria-label="Skip tour"
+        
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={goToGuide}
+          className="text-xs w-full mt-1 border-accent/30 text-accent hover:bg-accent/10"
         >
-          <X className="h-4 w-4" />
+          <BookOpen className="h-3 w-3 mr-2" />
+          View Full Guide
         </Button>
       </CardFooter>
     </Card>

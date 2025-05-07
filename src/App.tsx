@@ -12,27 +12,35 @@ import NotFound from './pages/NotFound';
 import UserGuide from './pages/UserGuide';
 import { TourProvider } from './contexts/TourContext';
 import { TourOverlay } from './components/TourOverlay';
+import { SplashScreen } from './components/SplashScreen';
 import './App.css';
+
+function AppWithProviders() {
+  return (
+    <TourProvider>
+      <Routes>
+        <Route path="/" element={<AppLayout />}>
+          <Route index element={<Home />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="chat" element={<Chat />} />
+          <Route path="community" element={<Community />} />
+          <Route path="call-history" element={<CallHistory />} />
+          <Route path="guide" element={<UserGuide />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+      <TourOverlay />
+      <SplashScreen />
+    </TourProvider>
+  );
+}
 
 function App() {
   return (
-    <TourProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<AppLayout />}>
-            <Route index element={<Home />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="chat" element={<Chat />} />
-            <Route path="community" element={<Community />} />
-            <Route path="call-history" element={<CallHistory />} />
-            <Route path="guide" element={<UserGuide />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </Router>
-      <TourOverlay />
-    </TourProvider>
+    <Router>
+      <AppWithProviders />
+    </Router>
   );
 }
 
