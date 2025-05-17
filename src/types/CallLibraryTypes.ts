@@ -60,6 +60,7 @@ export const sampleCallData: CallEntryType[] = [
         isRead: true,
         readAt: "2023-05-16T10:30:00",
         readBy: "Mentee",
+        threadTopic: "Product Management Certifications",
         replies: [
           {
             id: "c1-1-1",
@@ -74,6 +75,7 @@ export const sampleCallData: CallEntryType[] = [
             isRead: true,
             readAt: "2023-05-16T15:45:00",
             readBy: "Mentor",
+            threadTopic: "Product Management Certifications",
             replies: []
           }
         ]
@@ -89,6 +91,7 @@ export const sampleCallData: CallEntryType[] = [
         content: "I had an informational interview with a PM yesterday and used the talking points we discussed. It went really well!",
         timestamp: "2023-05-20T16:30:00",
         isRead: false,
+        threadTopic: "PM Interview Experience",
         replies: []
       }
     ]
@@ -141,6 +144,7 @@ export const sampleCallData: CallEntryType[] = [
         isRead: true,
         readAt: "2023-05-22T13:15:00",
         readBy: "Mentor",
+        threadTopic: "Interview Progress Update",
         replies: [
           {
             id: "c2-1-1",
@@ -153,6 +157,7 @@ export const sampleCallData: CallEntryType[] = [
             content: "That's fantastic news, Taylor! What's coming up in the next round? We should prepare specifically for that.",
             timestamp: "2023-05-22T14:05:00",
             isRead: false,
+            threadTopic: "Interview Progress Update",
             replies: []
           }
         ]

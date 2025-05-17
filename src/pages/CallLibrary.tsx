@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { MessageSquare, Search, ArrowLeft, BookOpen } from 'lucide-react';
+import { MessageSquare, Search, ArrowLeft, BookOpen, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { CallDetail } from '@/components/call-library/CallDetail';
 import { sampleCallData } from '@/types/CallLibraryTypes';
 import { CallLibraryExplainer } from '@/components/call-library/CallLibraryExplainer';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 // Categories for filtering
 const categories = ["All", "Career Development", "Leadership", "Technical Skills", "Interview Prep"];
@@ -79,6 +80,20 @@ const CallLibrary = () => {
           Your micro-mentorship knowledge repository. Revisit insights and continue valuable conversations asynchronously.
         </p>
         
+        {/* Thread Relevance Guide */}
+        <div className="mb-6 bg-secondary/10 rounded-lg p-4 border border-secondary/20">
+          <h3 className="text-md font-semibold flex items-center gap-2 text-accent">
+            <MessageCircle className="h-4 w-4" />
+            Thread Relevance Guidelines
+          </h3>
+          <ul className="text-xs text-gray-400 mt-2 space-y-1 pl-6 list-disc">
+            <li>Each thread must stay focused on its specific topic</li>
+            <li>You must acknowledge (mark as read) comments before replying</li>
+            <li>For tangential discussions, create a new thread or schedule another call</li>
+            <li>This structured approach builds a focused, searchable knowledge base</li>
+          </ul>
+        </div>
+        
         {/* Help button to reopen explainer */}
         <div className="mb-6">
           <Button 
@@ -138,11 +153,25 @@ const CallLibrary = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: parseFloat(call.id) * 0.1 }}
             >
-              <CallDetail 
-                call={call} 
-                userRole={userRole}
-                userId={userId}
-              />
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="w-full">
+                    <CallDetail 
+                      call={call} 
+                      userRole={userRole}
+                      userId={userId}
+                      enforceReadReceipts={true}  // Enable the enforced read receipts
+                    />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p className="text-sm">
+                    {call.comments.some(c => !c.isRead && c.author.id !== userId) 
+                      ? "This call has unread comments" 
+                      : "All comments have been read"}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
             </motion.div>
           ))
         )}

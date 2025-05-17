@@ -4,9 +4,19 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ReadReceipt } from './ReadReceipt';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Check, Reply, Trash2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from "@/components/ui/alert-dialog";
 
 export interface CommentType {
   id: string;
@@ -22,6 +32,7 @@ export interface CommentType {
   readAt?: string;
   readBy?: string;
   replies: CommentType[];
+  threadTopic?: string;
 }
 
 interface CommentThreadProps {
@@ -30,6 +41,7 @@ interface CommentThreadProps {
   sessionId: string;
   userRole: 'mentor' | 'mentee' | 'admin';
   userId: string;
+  threadTopic?: string;
 }
 
 export const CommentThread: React.FC<CommentThreadProps> = ({ 
@@ -37,8 +49,11 @@ export const CommentThread: React.FC<CommentThreadProps> = ({
   callId, 
   sessionId,
   userRole,
-  userId
+  userId,
+  threadTopic
 }) => {
+  const [activeThreadTopic, setActiveThreadTopic] = useState(threadTopic || '');
+  
   return (
     <div className="space-y-6 mt-6">
       {comments.length === 0 ? (
@@ -56,6 +71,7 @@ export const CommentThread: React.FC<CommentThreadProps> = ({
             sessionId={sessionId}
             userRole={userRole}
             userId={userId}
+            threadTopic={activeThreadTopic || comment.threadTopic}
           />
         ))
       )}
@@ -66,6 +82,8 @@ export const CommentThread: React.FC<CommentThreadProps> = ({
         parentId={null}
         userRole={userRole}
         userId={userId}
+        threadTopic={activeThreadTopic}
+        setThreadTopic={setActiveThreadTopic}
       />
     </div>
   );
@@ -78,6 +96,7 @@ interface CommentItemProps {
   sessionId: string;
   userRole: 'mentor' | 'mentee' | 'admin';
   userId: string;
+  threadTopic?: string;
 }
 
 const CommentItem: React.FC<CommentItemProps> = ({ 
@@ -86,9 +105,11 @@ const CommentItem: React.FC<CommentItemProps> = ({
   callId,
   sessionId,
   userRole,
-  userId
+  userId,
+  threadTopic
 }) => {
   const [showReplyForm, setShowReplyForm] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { toast } = useToast();
   const maxDepth = 3;
   
@@ -118,7 +139,18 @@ const CommentItem: React.FC<CommentItemProps> = ({
     comment.readBy = userRole === 'mentor' ? 'Mentor' : 'Mentee';
   };
   
+  const handleDelete = () => {
+    // In real implementation, this would call an API to delete the comment
+    toast({
+      title: "Comment deleted",
+      description: "The comment has been removed from this thread.",
+    });
+    setIsDeleteDialogOpen(false);
+  };
+  
   const isAuthor = comment.author.id === userId;
+  const canDelete = isAuthor || userRole === 'admin';
+  const relevantTopic = comment.threadTopic || threadTopic;
   
   return (
     <div className={`${depth > 0 ? 'ml-6 pt-4' : ''}`}>
@@ -155,28 +187,50 @@ const CommentItem: React.FC<CommentItemProps> = ({
               </span>
             </div>
             
+            {relevantTopic && (
+              <div className="mb-2">
+                <span className="text-xs text-gray-400">Topic: </span>
+                <span className="text-xs font-medium text-accent">{relevantTopic}</span>
+              </div>
+            )}
+            
             <div className="prose prose-sm dark:prose-invert max-w-none mb-3">
               <p className="text-sm text-foreground">{comment.content}</p>
             </div>
             
             <div className="flex items-center justify-between">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-xs" 
-                onClick={toggleReply}
-              >
-                Reply
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-xs flex items-center gap-1" 
+                  onClick={toggleReply}
+                >
+                  <Reply className="h-3 w-3" /> 
+                  Reply
+                </Button>
+                
+                {canDelete && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="text-xs text-destructive hover:text-destructive flex items-center gap-1" 
+                    onClick={() => setIsDeleteDialogOpen(true)}
+                  >
+                    <Trash2 className="h-3 w-3" /> 
+                    Delete
+                  </Button>
+                )}
+              </div>
               
               {!isAuthor && !comment.isRead && (
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="text-xs" 
+                  className="text-xs flex items-center gap-1" 
                   onClick={markAsRead}
                 >
-                  Mark as Read
+                  <Check className="h-3 w-3" /> Mark as Read
                 </Button>
               )}
               
@@ -192,6 +246,24 @@ const CommentItem: React.FC<CommentItemProps> = ({
         </div>
       </Card>
       
+      {/* Delete confirmation dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this comment?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently remove this comment from the thread. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      
       {showReplyForm && (
         <div className="ml-6 mt-3">
           <NewCommentForm 
@@ -201,6 +273,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
             userRole={userRole}
             userId={userId}
             onSubmitSuccess={() => setShowReplyForm(false)}
+            threadTopic={relevantTopic}
+            enforceThreadTopic={true}
           />
         </div>
       )}
@@ -216,6 +290,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
               sessionId={sessionId}
               userRole={userRole}
               userId={userId}
+              threadTopic={relevantTopic}
             />
           ))}
         </div>
@@ -231,6 +306,9 @@ interface NewCommentFormProps {
   userRole: 'mentor' | 'mentee' | 'admin';
   userId: string;
   onSubmitSuccess?: () => void;
+  threadTopic?: string;
+  setThreadTopic?: React.Dispatch<React.SetStateAction<string>>;
+  enforceThreadTopic?: boolean;
 }
 
 const NewCommentForm: React.FC<NewCommentFormProps> = ({ 
@@ -239,9 +317,13 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
   parentId,
   userRole,
   userId,
-  onSubmitSuccess
+  onSubmitSuccess,
+  threadTopic,
+  setThreadTopic,
+  enforceThreadTopic = false
 }) => {
   const [comment, setComment] = useState('');
+  const [topic, setTopic] = useState(threadTopic || '');
   const { toast } = useToast();
   
   const handleSubmit = (e: React.FormEvent) => {
@@ -256,11 +338,27 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
       return;
     }
     
+    if (!parentId && !topic.trim()) {
+      toast({
+        title: "Topic required",
+        description: "Please specify a topic for this thread to maintain relevance.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     // In real implementation, this would call an API to add a comment
     toast({
       title: "Comment added",
-      description: "Your comment has been added to the thread.",
+      description: enforceThreadTopic 
+        ? "Your comment has been added to the thread." 
+        : "Your comment has been added. Remember to keep discussions on topic.",
     });
+    
+    // If this is a new top-level comment and we have a setThreadTopic function
+    if (!parentId && setThreadTopic) {
+      setThreadTopic(topic);
+    }
     
     // Reset form
     setComment('');
@@ -272,14 +370,40 @@ const NewCommentForm: React.FC<NewCommentFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className="mt-4">
       <div className="space-y-3">
+        {!parentId && !enforceThreadTopic && (
+          <div>
+            <label htmlFor="topic" className="block text-sm font-medium mb-1">Thread Topic</label>
+            <input
+              id="topic"
+              type="text"
+              placeholder="Specify a relevant topic for this conversation"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              className="w-full px-3 py-2 border border-input bg-card rounded-md text-sm"
+              required
+            />
+          </div>
+        )}
+        
+        {enforceThreadTopic && threadTopic && (
+          <div className="bg-secondary/20 px-3 py-2 rounded-md">
+            <p className="text-xs font-medium">Topic: <span className="text-accent">{threadTopic}</span></p>
+            <p className="text-xs text-gray-400 mt-1">Keep your comment relevant to this topic</p>
+          </div>
+        )}
+        
         <Textarea
-          placeholder="Add to the conversation..."
+          placeholder={
+            enforceThreadTopic
+              ? `Add to the conversation about "${threadTopic}"...`
+              : "Add to the conversation..."
+          }
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           className="min-h-[100px] bg-card"
         />
         <div className="flex justify-end">
-          <Button type="submit" disabled={!comment.trim()}>
+          <Button type="submit" disabled={!comment.trim() || (!parentId && !topic.trim() && !enforceThreadTopic)}>
             Submit
           </Button>
         </div>

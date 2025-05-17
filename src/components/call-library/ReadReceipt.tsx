@@ -12,9 +12,20 @@ interface ReadReceiptProps {
 export const ReadReceipt: React.FC<ReadReceiptProps> = ({ isRead, readAt, readBy }) => {
   if (!isRead) {
     return (
-      <span className="text-xs text-gray-400">Unread</span>
+      <span className="text-xs text-gray-400 flex items-center">
+        <span className="h-2 w-2 bg-amber-500 rounded-full mr-1"></span>
+        Unread
+      </span>
     );
   }
+
+  const formattedDate = readAt ? new Date(readAt).toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  }) : 'unknown date';
 
   return (
     <Tooltip>
@@ -25,7 +36,7 @@ export const ReadReceipt: React.FC<ReadReceiptProps> = ({ isRead, readAt, readBy
         </div>
       </TooltipTrigger>
       <TooltipContent>
-        <p>Read by {readBy} on {readAt}</p>
+        <p>Read by {readBy || 'recipient'} on {formattedDate}</p>
       </TooltipContent>
     </Tooltip>
   );
