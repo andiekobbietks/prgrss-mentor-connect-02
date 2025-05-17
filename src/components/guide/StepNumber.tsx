@@ -8,11 +8,15 @@ interface StepNumberProps {
 
 const StepNumber = ({ number }: StepNumberProps) => {
   return (
-    <div className="flex-shrink-0">
+    <motion.div 
+      className="flex-shrink-0"
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+    >
       <div className="w-10 h-10 bg-accent text-black rounded-full flex items-center justify-center font-bold shadow-lg shadow-accent/20 transition-transform group-hover:scale-110">
         {number}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

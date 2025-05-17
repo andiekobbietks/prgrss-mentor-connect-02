@@ -10,6 +10,8 @@ import Community from './pages/Community';
 import CallHistory from './pages/CallHistory';
 import NotFound from './pages/NotFound';
 import UserGuide from './pages/UserGuide';
+import LearningAcademy from './pages/LearningAcademy';
+import CallLibrary from './pages/CallLibrary';
 import { TourProvider, useTour } from './contexts/TourContext';
 import { TourOverlay } from './components/TourOverlay';
 import { SplashScreen } from './components/SplashScreen';
@@ -43,6 +45,8 @@ function AppContent() {
           <Route path="community" element={<Community />} />
           <Route path="call-history" element={<CallHistory />} />
           <Route path="guide" element={<UserGuide />} />
+          <Route path="learning-academy" element={<LearningAcademy />} />
+          <Route path="call-library" element={<CallLibrary />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
