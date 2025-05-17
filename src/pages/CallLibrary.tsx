@@ -1,12 +1,13 @@
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MessageSquare, Search, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { CallDetail } from '@/components/call-library/CallDetail';
 import { sampleCallData } from '@/types/CallLibraryTypes';
+import { CallLibraryExplainer } from '@/components/call-library/CallLibraryExplainer';
 
 // Categories for filtering
 const categories = ["All", "Career Development", "Leadership", "Technical Skills", "Interview Prep"];
@@ -14,8 +15,22 @@ const categories = ["All", "Career Development", "Leadership", "Technical Skills
 const CallLibrary = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showExplainer, setShowExplainer] = useState(true);
   const userId = "mentee1"; // In a real app, this would come from authentication
   const userRole = "mentee"; // In a real app, this would come from authentication
+  
+  // Check if this is the first visit to the call library
+  useEffect(() => {
+    const hasSeenExplainer = localStorage.getItem('hasSeenCallLibraryExplainer');
+    if (hasSeenExplainer) {
+      setShowExplainer(false);
+    }
+  }, []);
+
+  const handleCloseExplainer = () => {
+    setShowExplainer(false);
+    localStorage.setItem('hasSeenCallLibraryExplainer', 'true');
+  };
   
   const filterCalls = () => {
     return sampleCallData.filter(call => {
@@ -36,6 +51,12 @@ const CallLibrary = () => {
 
   return (
     <div className="bg-black min-h-screen pb-20 px-4 pt-4">
+      <AnimatePresence>
+        {showExplainer && (
+          <CallLibraryExplainer onClose={handleCloseExplainer} />
+        )}
+      </AnimatePresence>
+      
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -57,6 +78,19 @@ const CallLibrary = () => {
         <p className="text-gray-400 mb-6">
           Review and continue valuable mentorship conversations with interactive threads.
         </p>
+        
+        {/* Help button to reopen explainer */}
+        <div className="mb-4">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => setShowExplainer(true)}
+            className="text-accent border-accent/20"
+          >
+            <MessageSquare className="h-4 w-4 mr-1" />
+            What is Call Library?
+          </Button>
+        </div>
         
         {/* Search bar */}
         <div className="relative mb-6">
