@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { MessageSquare, ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { MessageSquare, ChevronDown, ChevronUp, MinusSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { CommentItem } from './CommentItem';
@@ -30,8 +30,19 @@ export const CommentThread: React.FC<CommentThreadProps> = ({
   callCategory = "General" // Default value
 }) => {
   const [activeThreadTopic, setActiveThreadTopic] = useState(threadTopic || '');
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [selectedSuggestion, setSelectedSuggestion] = useState('');
+  
+  // Load isCollapsed state from localStorage with the callId as part of the key
+  const storageKey = `thread-collapsed-${callId}`;
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    const savedState = localStorage.getItem(storageKey);
+    return savedState ? JSON.parse(savedState) : false;
+  });
+  
+  // Save isCollapsed state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(isCollapsed));
+  }, [isCollapsed, storageKey]);
   
   const handleSuggestionSelect = (suggestion: string) => {
     setSelectedSuggestion(suggestion);
@@ -106,6 +117,22 @@ export const CommentThread: React.FC<CommentThreadProps> = ({
             setThreadTopic={setActiveThreadTopic}
             initialContent={selectedSuggestion}
           />
+          
+          {/* Additional collapse button near submit area */}
+          <div className="flex justify-center mt-4">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={toggleCollapse}
+              className="text-xs text-gray-400 border-gray-700 hover:bg-gray-800"
+            >
+              {isCollapsed ? (
+                <>Expand Comments</>
+              ) : (
+                <>Collapse Thread</>
+              )}
+            </Button>
+          </div>
         </CollapsibleContent>
       </Collapsible>
       
