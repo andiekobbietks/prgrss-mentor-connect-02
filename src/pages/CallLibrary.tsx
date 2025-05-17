@@ -1,14 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { MessageSquare, Search, ArrowLeft, BookOpen, MessageCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { CallDetail } from '@/components/call-library/CallDetail';
-import { sampleCallData } from '@/types/CallLibraryTypes';
 import { CallLibraryExplainer } from '@/components/call-library/CallLibraryExplainer';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { CallLibraryHeader } from '@/components/call-library/CallLibraryHeader';
+import { CallLibraryGuide } from '@/components/call-library/CallLibraryGuide';
+import { CallLibrarySearch } from '@/components/call-library/CallLibrarySearch';
+import { CallLibraryList } from '@/components/call-library/CallLibraryList';
+import { sampleCallData } from '@/types/CallLibraryTypes';
 
 // Categories for filtering
 const categories = ["All", "Career Development", "Leadership", "Technical Skills", "Interview Prep"];
@@ -63,119 +61,24 @@ const CallLibrary = () => {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <MessageSquare className="h-6 w-6 text-accent" />
-            Call Library
-            {hasUnreadComments && (
-              <span className="bg-red-500 rounded-full h-2 w-2" />
-            )}
-          </h1>
-          <Link to="/" className="text-gray-400 hover:text-accent flex items-center">
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Back to Home
-          </Link>
-        </div>
-        <p className="text-gray-400 mb-6">
-          Your micro-mentorship knowledge repository. Revisit insights and continue valuable conversations asynchronously.
-        </p>
+        <CallLibraryHeader hasUnreadComments={hasUnreadComments} />
         
-        {/* Thread Relevance Guide */}
-        <div className="mb-6 bg-secondary/10 rounded-lg p-4 border border-secondary/20">
-          <h3 className="text-md font-semibold flex items-center gap-2 text-accent">
-            <MessageCircle className="h-4 w-4" />
-            Thread Relevance Guidelines
-          </h3>
-          <ul className="text-xs text-gray-400 mt-2 space-y-1 pl-6 list-disc">
-            <li>Each thread must stay focused on its specific topic</li>
-            <li>You must acknowledge (mark as read) comments before replying</li>
-            <li>For tangential discussions, create a new thread or schedule another call</li>
-            <li>This structured approach builds a focused, searchable knowledge base</li>
-          </ul>
-        </div>
+        <CallLibraryGuide onOpenExplainer={() => setShowExplainer(true)} />
         
-        {/* Help button to reopen explainer */}
-        <div className="mb-6">
-          <Button 
-            variant="outline" 
-            onClick={() => setShowExplainer(true)}
-            className="text-accent border-accent/20 hover:bg-accent/10"
-          >
-            <BookOpen className="h-4 w-4 mr-2" />
-            Learn About the Call Library Philosophy
-          </Button>
-          <p className="text-xs text-gray-500 mt-1 ml-1">
-            Discover how this feature transforms mentorship conversations into lasting resources
-          </p>
-        </div>
-        
-        {/* Search bar */}
-        <div className="relative mb-6">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-          <Input 
-            placeholder="Search for calls by topic, skill, or technique..."
-            className="pl-10 bg-card border-accent/10"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        
-        {/* Category filters */}
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-4">
-          {categories.map((category) => (
-            <Button 
-              key={category}
-              variant={activeCategory === category ? "default" : "outline"} 
-              onClick={() => setActiveCategory(category)}
-              size="sm"
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
+        <CallLibrarySearch 
+          categories={categories}
+          activeCategory={activeCategory}
+          searchQuery={searchQuery}
+          setActiveCategory={setActiveCategory}
+          setSearchQuery={setSearchQuery}
+        />
       </motion.div>
 
-      {/* Call Library entries */}
-      <div className="space-y-6 mb-20">
-        {filteredCalls.length === 0 ? (
-          <div className="text-center py-16">
-            <MessageSquare className="h-12 w-12 mx-auto text-gray-500 mb-4" />
-            <h3 className="text-xl font-medium mb-2">No calls found</h3>
-            <p className="text-gray-400">
-              Try adjusting your search or filters to find what you're looking for.
-            </p>
-          </div>
-        ) : (
-          filteredCalls.map((call) => (
-            <motion.div
-              key={call.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: parseFloat(call.id) * 0.1 }}
-            >
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="w-full">
-                    <CallDetail 
-                      call={call} 
-                      userRole={userRole}
-                      userId={userId}
-                      enforceReadReceipts={true}  // Enable the enforced read receipts
-                    />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent side="right">
-                  <p className="text-sm">
-                    {call.comments.some(c => !c.isRead && c.author.id !== userId) 
-                      ? "This call has unread comments" 
-                      : "All comments have been read"}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </motion.div>
-          ))
-        )}
-      </div>
+      <CallLibraryList
+        filteredCalls={filteredCalls}
+        userRole={userRole}
+        userId={userId}
+      />
     </div>
   );
 };
