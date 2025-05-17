@@ -8,7 +8,7 @@ import { CallEntryType } from '@/types/CallLibraryTypes';
 
 interface CallLibraryListProps {
   filteredCalls: CallEntryType[];
-  userRole: string;
+  userRole: 'mentor' | 'mentee' | 'admin';  // Updated to use the union type
   userId: string;
 }
 

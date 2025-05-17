@@ -16,7 +16,7 @@ const CallLibrary = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showExplainer, setShowExplainer] = useState(true);
   const userId = "mentee1"; // In a real app, this would come from authentication
-  const userRole = "mentee"; // In a real app, this would come from authentication
+  const userRole = "mentee" as 'mentor' | 'mentee' | 'admin'; // Explicitly typed as the union type
   
   // Check if this is the first visit to the call library
   useEffect(() => {
