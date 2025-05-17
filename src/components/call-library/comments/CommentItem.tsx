@@ -1,23 +1,12 @@
 
 import React, { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Check, Reply, Trash2 } from 'lucide-react';
-import { ReadReceipt } from '../ReadReceipt';
 import { NewCommentForm } from './NewCommentForm';
 import { CommentType } from './types';
-import { 
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle
-} from "@/components/ui/alert-dialog";
+import { CommentActions } from './CommentActions';
+import { DeleteCommentDialog } from './DeleteCommentDialog';
 
 interface CommentItemProps {
   comment: CommentType;
@@ -128,71 +117,25 @@ export const CommentItem: React.FC<CommentItemProps> = ({
               <p className="text-sm text-foreground">{comment.content}</p>
             </div>
             
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-xs flex items-center gap-1" 
-                  onClick={toggleReply}
-                >
-                  <Reply className="h-3 w-3" /> 
-                  Reply
-                </Button>
-                
-                {canDelete && (
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    className="text-xs text-destructive hover:text-destructive flex items-center gap-1" 
-                    onClick={() => setIsDeleteDialogOpen(true)}
-                  >
-                    <Trash2 className="h-3 w-3" /> 
-                    Delete
-                  </Button>
-                )}
-              </div>
-              
-              {!isAuthor && !comment.isRead && (
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="text-xs flex items-center gap-1" 
-                  onClick={markAsRead}
-                >
-                  <Check className="h-3 w-3" /> Mark as Read
-                </Button>
-              )}
-              
-              {(comment.isRead || isAuthor) && (
-                <ReadReceipt 
-                  isRead={comment.isRead} 
-                  readAt={comment.readAt}
-                  readBy={comment.readBy}
-                />
-              )}
-            </div>
+            <CommentActions 
+              isAuthor={isAuthor}
+              canDelete={canDelete}
+              isRead={comment.isRead}
+              readAt={comment.readAt}
+              readBy={comment.readBy}
+              onReply={toggleReply}
+              onDelete={() => setIsDeleteDialogOpen(true)}
+              onMarkAsRead={markAsRead}
+            />
           </div>
         </div>
       </Card>
       
-      {/* Delete confirmation dialog */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete this comment?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently remove this comment from the thread. This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground">
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeleteCommentDialog 
+        isOpen={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        onDelete={handleDelete}
+      />
       
       {showReplyForm && (
         <div className="ml-6 mt-3">
