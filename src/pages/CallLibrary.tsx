@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { MessageSquare, Search, ArrowLeft } from 'lucide-react';
+import { MessageSquare, Search, ArrowLeft, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { CallDetail } from '@/components/call-library/CallDetail';
 import { sampleCallData } from '@/types/CallLibraryTypes';
@@ -76,20 +76,22 @@ const CallLibrary = () => {
           </Link>
         </div>
         <p className="text-gray-400 mb-6">
-          Review and continue valuable mentorship conversations with interactive threads.
+          Your micro-mentorship knowledge repository. Revisit insights and continue valuable conversations asynchronously.
         </p>
         
         {/* Help button to reopen explainer */}
-        <div className="mb-4">
+        <div className="mb-6">
           <Button 
             variant="outline" 
-            size="sm" 
             onClick={() => setShowExplainer(true)}
-            className="text-accent border-accent/20"
+            className="text-accent border-accent/20 hover:bg-accent/10"
           >
-            <MessageSquare className="h-4 w-4 mr-1" />
-            What is Call Library?
+            <BookOpen className="h-4 w-4 mr-2" />
+            Learn About the Call Library Philosophy
           </Button>
+          <p className="text-xs text-gray-500 mt-1 ml-1">
+            Discover how this feature transforms mentorship conversations into lasting resources
+          </p>
         </div>
         
         {/* Search bar */}
