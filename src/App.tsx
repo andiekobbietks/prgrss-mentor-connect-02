@@ -15,6 +15,7 @@ import CallLibrary from './pages/CallLibrary';
 import { TourProvider, useTour } from './contexts/TourContext';
 import { TourOverlay } from './components/TourOverlay';
 import { SplashScreen } from './components/SplashScreen';
+import { Toaster } from './components/ui/toaster';
 import './App.css';
 
 function AppContent() {
@@ -52,6 +53,7 @@ function AppContent() {
       </Routes>
       <TourOverlay />
       <SplashScreen />
+      <Toaster />
     </>
   );
 }

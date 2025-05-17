@@ -5,7 +5,7 @@ import { Home, Users, User, Calendar, MessageSquare, Settings, Info } from "luci
 import { TourTarget } from "./TourTarget";
 import { TourOverlay } from "./TourOverlay";
 import { useTour } from "@/contexts/TourContext";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function AppLayout() {
   const location = useLocation();
@@ -16,22 +16,20 @@ export default function AppLayout() {
       {/* Header */}
       <header className="flex justify-between items-center p-6">
         <div className="flex-1">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button 
-                  onClick={startTour} 
-                  className="text-gray-400 hover:text-accent p-2 rounded-full hover:bg-accent/10 transition-colors"
-                  aria-label="Restart Tour"
-                >
-                  <Info className="h-5 w-5" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Restart Tour</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button 
+                onClick={startTour} 
+                className="text-gray-400 hover:text-accent p-2 rounded-full hover:bg-accent/10 transition-colors"
+                aria-label="Restart Tour"
+              >
+                <Info className="h-5 w-5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Restart Tour</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
         <div className="flex items-center">
           <TourTarget id="welcome-logo">
