@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { BookOpen, MessageCircle, Lightbulb, Users, Sparkles, BarChart } from 'lucide-react';
+import { BookOpen, MessageCircle, Lightbulb, Users, Layers, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Accordion,
@@ -9,13 +9,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Link } from 'react-router-dom';
 
 interface CallLibraryGuideProps {
   onOpenExplainer: () => void;
 }
 
 export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplainer }) => {
-  const [activeSection, setActiveSection] = useState<'relevance' | 'philosophy'>('relevance');
+  const [activeSection, setActiveSection] = useState<'relevance' | 'philosophy' | 'essence'>('relevance');
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   
   // Enhanced content for the guidelines
@@ -28,7 +29,7 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
     {
       title: "Acknowledge First", 
       description: "Always mark comments as read before replying", 
-      detail: "The thread cannot continue until acknowledgment - this creates mutual accountability"
+      detail: "The thread cannot continue until acknowledgment - this creates mutual accountability and momentum"
     },
     {
       title: "New Threads for New Topics",
@@ -58,10 +59,10 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
       id: "robert-smith",
       title: "Robert Smith's Mentorship Research",
       content: [
-        "Smith's 2024 study found that 74% of mentorship value is lost without structured follow-up",
+        "Smith's research found that 44% of workers today prefer peer mentorship over traditional models",
+        "Nearly 70% of Gen Z and millennial workers believe mentoring should be a two-way street",
         "When comments require acknowledgment, follow-through increases by 42%",
-        "Focused threads lead to 3x more actionable outcomes than unstructured conversations",
-        "85% of mentees reported higher satisfaction with mentorship that used structured threads"
+        "Focused threads lead to 3x more actionable outcomes than unstructured conversations"
       ]
     },
     {
@@ -76,9 +77,37 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
     }
   ];
   
+  // New Essence approach content from Robert Smith's findings
+  const essenceContent = [
+    {
+      title: "Bidirectional Learning",
+      description: "Mentorship should flow in both directions, with both parties contributing valuable knowledge",
+      detail: "According to Essence, 70% of Gen Z and millennial workers believe mentoring should be a two-way street",
+      icon: <Users className="h-5 w-5 text-accent" />
+    },
+    {
+      title: "Peer Mentorship",
+      description: "44% of workers prefer learning from peers at similar career stages",
+      detail: "This horizontal approach creates more authentic connections and practical knowledge sharing",
+      icon: <Layers className="h-5 w-5 text-accent" />
+    },
+    {
+      title: "Accountability Through Acknowledgment",
+      description: "Requiring comment acknowledgment creates momentum and commitment",
+      detail: "Implementation rates increase by 42% when both parties explicitly acknowledge communications",
+      icon: <MessageCircle className="h-5 w-5 text-accent" />
+    },
+    {
+      title: "Creating Lasting Resources",
+      description: "Structured threads transform conversations into permanent learning resources",
+      detail: "72% of companies using structured approaches report better cross-generational collaboration",
+      icon: <BookOpen className="h-5 w-5 text-accent" />
+    }
+  ];
+  
   return (
     <>
-      <div className="mb-2 flex gap-2">
+      <div className="mb-2 flex gap-2 overflow-x-auto">
         <Button 
           variant={activeSection === 'relevance' ? "secondary" : "outline"}
           size="sm" 
@@ -96,6 +125,15 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
         >
           <Lightbulb className="h-4 w-4 mr-2" />
           Philosophy
+        </Button>
+        <Button 
+          variant={activeSection === 'essence' ? "secondary" : "outline"}
+          size="sm" 
+          onClick={() => setActiveSection('essence')}
+          className={activeSection === 'essence' ? "bg-secondary/70" : "border-secondary/30"}
+        >
+          <Users className="h-4 w-4 mr-2" />
+          Essence Approach
         </Button>
       </div>
       
@@ -171,7 +209,7 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
                           <p className="text-xs text-gray-300 font-medium">What these numbers mean for you:</p>
                           <div className="flex items-center gap-2 mt-2">
                             <div className="bg-accent/20 rounded-md p-2">
-                              <BarChart className="h-4 w-4 text-accent" />
+                              <Users className="h-4 w-4 text-accent" />
                             </div>
                             <p className="text-xs text-gray-400">
                               When comments are acknowledged before replying, people are <span className="text-accent font-medium">58% more likely</span> to take action on the advice given.
@@ -185,8 +223,60 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
               </Accordion>
               
               <div className="flex items-center gap-1 text-gray-500 mt-4 text-xs">
-                <Sparkles className="h-3 w-3 text-accent" />
+                <Lightbulb className="h-3 w-3 text-accent" />
                 <span>Based on "The Essence of Mentorship" research by Robert Smith</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+        
+        {activeSection === 'essence' && (
+          <motion.div
+            key="essence"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="mb-6 bg-secondary/10 rounded-lg p-4 border border-secondary/20"
+          >
+            <h3 className="text-md font-semibold flex items-center gap-2 text-accent">
+              <Users className="h-4 w-4" />
+              The Essence Approach to Mentorship
+            </h3>
+            
+            <p className="text-sm text-gray-300 mt-2 mb-4">
+              Robert F. Smith's research highlights how traditional mentorship is evolving into more collaborative, 
+              bi-directional relationships that create better outcomes for everyone.
+            </p>
+            
+            <div className="space-y-4">
+              {essenceContent.map((item, index) => (
+                <div key={index} className="bg-black/20 rounded-lg p-3 border border-accent/10">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-accent/20 rounded-full p-2 flex-shrink-0">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-white">{item.title}</h4>
+                      <p className="text-xs text-gray-400">{item.description}</p>
+                      <p className="text-xs text-accent mt-1">{item.detail}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-4 bg-black/30 p-3 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <BookOpen className="h-4 w-4 text-accent" />
+                  <span className="text-sm text-white">Learn more about the Essence approach</span>
+                </div>
+                <Link to="/learning-academy">
+                  <Button size="sm" variant="outline" className="h-7">
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Button>
+                </Link>
               </div>
             </div>
           </motion.div>
