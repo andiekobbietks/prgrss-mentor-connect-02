@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { NewCommentForm } from './NewCommentForm';
 import { CommentType } from './types';
 import { CommentActions } from './CommentActions';
 import { DeleteCommentDialog } from './DeleteCommentDialog';
+import { CommentHeader } from './CommentHeader';
+import { CommentContent } from './CommentContent';
 
 interface CommentItemProps {
   comment: CommentType;
@@ -74,48 +75,11 @@ export const CommentItem: React.FC<CommentItemProps> = ({
   return (
     <div className={`${depth > 0 ? 'ml-6 pt-4' : ''}`}>
       <Card className={`p-4 ${isAuthor ? 'bg-secondary/50' : 'bg-card'}`}>
-        <div className="flex items-start gap-3">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
-            <AvatarFallback>
-              {comment.author.name.charAt(0).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+        <div className="flex flex-col">
+          <CommentHeader author={comment.author} timestamp={comment.timestamp} />
           
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-2">
-                <span className="font-medium">{comment.author.name}</span>
-                <span className={`text-xs px-2 py-0.5 rounded-full ${
-                  comment.author.role === 'mentor' 
-                    ? 'bg-accent/20 text-accent' 
-                    : 'bg-blue-500/20 text-blue-500'
-                }`}>
-                  {comment.author.role.charAt(0).toUpperCase() + comment.author.role.slice(1)}
-                </span>
-              </div>
-              
-              <span className="text-xs text-gray-400">
-                {new Date(comment.timestamp).toLocaleDateString('en-US', { 
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
-              </span>
-            </div>
-            
-            {relevantTopic && (
-              <div className="mb-2">
-                <span className="text-xs text-gray-400">Topic: </span>
-                <span className="text-xs font-medium text-accent">{relevantTopic}</span>
-              </div>
-            )}
-            
-            <div className="prose prose-sm dark:prose-invert max-w-none mb-3">
-              <p className="text-sm text-foreground">{comment.content}</p>
-            </div>
+          <div className="ml-11"> {/* Offset to align with avatar */}
+            <CommentContent content={comment.content} threadTopic={relevantTopic} />
             
             <CommentActions 
               isAuthor={isAuthor}
