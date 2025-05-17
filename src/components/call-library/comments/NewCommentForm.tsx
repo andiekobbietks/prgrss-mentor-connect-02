@@ -1,8 +1,8 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { Send } from 'lucide-react';
 
 interface NewCommentFormProps {
   callId: string;
@@ -12,8 +12,9 @@ interface NewCommentFormProps {
   userId: string;
   onSubmitSuccess?: () => void;
   threadTopic?: string;
-  setThreadTopic?: React.Dispatch<React.SetStateAction<string>>;
+  setThreadTopic?: (topic: string) => void;
   enforceThreadTopic?: boolean;
+  initialContent?: string;
 }
 
 export const NewCommentForm: React.FC<NewCommentFormProps> = ({ 
@@ -25,51 +26,72 @@ export const NewCommentForm: React.FC<NewCommentFormProps> = ({
   onSubmitSuccess,
   threadTopic,
   setThreadTopic,
-  enforceThreadTopic = false
+  enforceThreadTopic = false,
+  initialContent = ''
 }) => {
-  const [comment, setComment] = useState('');
-  const [topic, setTopic] = useState(threadTopic || '');
+  const [content, setContent] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [localThreadTopic, setLocalThreadTopic] = useState(threadTopic || '');
   const { toast } = useToast();
+  
+  // Update content when initialContent changes
+  useEffect(() => {
+    if (initialContent) {
+      setContent(initialContent);
+    }
+  }, [initialContent]);
+  
+  // Update local thread topic when the parent one changes
+  useEffect(() => {
+    if (threadTopic) {
+      setLocalThreadTopic(threadTopic);
+    }
+  }, [threadTopic]);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!comment.trim()) {
+    if (!content.trim()) {
       toast({
-        title: "Empty comment",
-        description: "Please write something before submitting.",
+        title: "Comment is empty",
+        description: "Please enter a comment before submitting.",
         variant: "destructive",
       });
       return;
     }
     
-    if (!parentId && !topic.trim()) {
+    if (enforceThreadTopic && !localThreadTopic && !threadTopic) {
       toast({
-        title: "Topic required",
-        description: "Please specify a topic for this thread to maintain relevance.",
+        title: "Thread topic required",
+        description: "Please enter a topic for this thread.",
         variant: "destructive",
       });
       return;
     }
     
-    // In real implementation, this would call an API to add a comment
-    toast({
-      title: "Comment added",
-      description: enforceThreadTopic 
-        ? "Your comment has been added to the thread." 
-        : "Your comment has been added. Remember to keep discussions on topic.",
-    });
+    setIsSubmitting(true);
     
-    // If this is a new top-level comment and we have a setThreadTopic function
-    if (!parentId && setThreadTopic) {
-      setThreadTopic(topic);
-    }
-    
-    // Reset form
-    setComment('');
-    if (onSubmitSuccess) {
-      onSubmitSuccess();
-    }
+    // In a real app, this would call an API
+    setTimeout(() => {
+      // Simulate success
+      const finalThreadTopic = localThreadTopic || threadTopic || '';
+      
+      if (setThreadTopic && !threadTopic && localThreadTopic) {
+        setThreadTopic(localThreadTopic);
+      }
+      
+      toast({
+        title: "Comment added",
+        description: "Your comment has been posted successfully.",
+      });
+      
+      setContent('');
+      setIsSubmitting(false);
+      
+      if (onSubmitSuccess) {
+        onSubmitSuccess();
+      }
+    }, 500);
   };
   
   return (
@@ -82,8 +104,8 @@ export const NewCommentForm: React.FC<NewCommentFormProps> = ({
               id="topic"
               type="text"
               placeholder="Specify a relevant topic for this conversation"
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
+              value={localThreadTopic}
+              onChange={(e) => setLocalThreadTopic(e.target.value)}
               className="w-full px-3 py-2 border border-input bg-card rounded-md text-sm"
               required
             />
@@ -103,12 +125,12 @@ export const NewCommentForm: React.FC<NewCommentFormProps> = ({
               ? `Add to the conversation about "${threadTopic}"...`
               : "Add to the conversation..."
           }
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           className="min-h-[100px] bg-card"
         />
         <div className="flex justify-end">
-          <Button type="submit" disabled={!comment.trim() || (!parentId && !topic.trim() && !enforceThreadTopic)}>
+          <Button type="submit" disabled={!content.trim() || (!parentId && !localThreadTopic && !enforceThreadTopic)}>
             Submit
           </Button>
         </div>

@@ -166,6 +166,8 @@ export const CallDetail: React.FC<CallDetailProps> = ({ call, userRole, userId, 
               sessionId={call.sessionId}
               userRole={userRole}
               userId={userId}
+              callTitle={call.title}
+              callCategory={call.category}
             />
           </CollapsibleContent>
         </Collapsible>
