@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useTour } from '@/contexts/TourContext';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight, X, BookOpen, ArrowUpDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, BookOpen, ArrowUpDown, Calendar } from 'lucide-react';
 
 interface HintContentProps {
   arrowPlacement?: 'top' | 'bottom' | 'left' | 'right';
@@ -42,6 +42,10 @@ export function HintContent({ arrowPlacement }: HintContentProps) {
           <p className="text-xs text-gray-300 mt-1 italic">
             "Explore real examples of how younger professionals share valuable insights with senior leaders through our recorded call samples."
           </p>
+          <div className="flex items-center gap-1 mt-1 text-xs text-gray-500">
+            <Calendar className="h-3 w-3" />
+            <span>Source: Robert F. Smith's LinkedIn post, May 2025</span>
+          </div>
         </div>
       );
     } else if (step.id === 'learning-academy-button') {
@@ -51,6 +55,10 @@ export function HintContent({ arrowPlacement }: HintContentProps) {
           <p className="text-xs text-gray-300 mt-1 italic">
             "Discover how peer mentorship networks offer support and real-time feedback that traditional mentorship setups sometimes miss."
           </p>
+          <div className="flex items-center gap-1 mt-1 text-xs text-gray-500">
+            <Calendar className="h-3 w-3" />
+            <span>Source: Robert F. Smith's Instagram (@robertfredericksmith), May 2025</span>
+          </div>
         </div>
       );
     } else {
@@ -60,6 +68,10 @@ export function HintContent({ arrowPlacement }: HintContentProps) {
           <p className="text-xs text-gray-300 mt-1 italic">
             "Nearly 70% of Gen Z and millennial workers believe that mentoring should be a two-way street. At every level, mentorship should be about mutual learning and growth."
           </p>
+          <div className="flex items-center gap-1 mt-1 text-xs text-gray-500">
+            <Calendar className="h-3 w-3" />
+            <span>LinkedIn post, May 2025</span>
+          </div>
         </div>
       );
     }

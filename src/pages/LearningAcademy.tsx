@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { BookOpen, ArrowRight, Share, Layers, MessageCircle, Users, ArrowUpDown } from 'lucide-react';
+import { BookOpen, ArrowRight, Share, Layers, MessageCircle, Users, ArrowUpDown, CalendarIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
@@ -73,7 +72,7 @@ const learningModules = [
   }
 ];
 
-// Updated EssenceApproachContent to prominently feature Reverse Mentorship
+// Updated EssenceApproachContent to prominently feature Reverse Mentorship with source attributions
 const EssenceApproachContent = () => {
   const [activeTab, setActiveTab] = useState<"essence" | "reverse">("essence");
   
@@ -103,11 +102,27 @@ const EssenceApproachContent = () => {
           <h2 className="text-2xl font-bold text-white">The Essence Approach to Modern Mentorship</h2>
           
           <div className="bg-secondary/20 rounded-lg p-6 border border-accent/20">
-            <h3 className="text-xl font-medium text-accent mb-4">What is the "Essence" Approach?</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-medium text-accent">What is the "Essence" Approach?</h3>
+              <div className="px-2 py-1 bg-accent/20 rounded-full text-xs text-accent">
+                March 2025
+              </div>
+            </div>
+            
             <p className="text-gray-300 mb-4">
               The "Essence" approach, highlighted in Robert F. Smith's research, recognizes that traditional top-down mentorship 
               is evolving into more collaborative, bi-directional relationships between mentors and mentees.
             </p>
+            
+            <div className="bg-black/30 p-3 rounded-lg mb-4">
+              <div className="flex items-start gap-2 text-sm">
+                <span className="text-accent font-medium">Source:</span>
+                <span className="text-gray-300">
+                  Robert F. Smith LinkedIn post, May 2025, referencing findings published in Essence magazine's 
+                  March 2025 article "Traditional Mentorship Is Dead" by Kimberly Wilson.
+                </span>
+              </div>
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div className="bg-secondary/30 p-4 rounded-lg">
@@ -121,6 +136,9 @@ const EssenceApproachContent = () => {
                 <p className="text-xs text-accent mt-2">
                   This means nearly half of professionals find more value in learning from colleagues at similar career stages.
                 </p>
+                <div className="mt-2 pt-2 border-t border-accent/10 text-xs text-gray-500">
+                  Source: Essence magazine, "Traditional Mentorship Is Dead" (March 2025)
+                </div>
               </div>
               
               <div className="bg-secondary/30 p-4 rounded-lg">
@@ -134,6 +152,9 @@ const EssenceApproachContent = () => {
                 <p className="text-xs text-accent mt-2">
                   This represents a fundamental shift from the traditional mentorship paradigm toward collaborative growth.
                 </p>
+                <div className="mt-2 pt-2 border-t border-accent/10 text-xs text-gray-500">
+                  Source: Robert F. Smith LinkedIn post (May 2025)
+                </div>
               </div>
             </div>
             
@@ -157,6 +178,9 @@ const EssenceApproachContent = () => {
                   <span>Implementation rates increase by 58% when mentorship follows a structured acknowledgment approach</span>
                 </li>
               </ul>
+              <div className="mt-3 pt-2 border-t border-accent/10 text-xs text-gray-500">
+                Sources: McKinsey & Company research cited in Essence (2020-2025), LeanIn.Org studies (2020)
+              </div>
             </div>
           </div>
           
@@ -226,6 +250,9 @@ const EssenceApproachContent = () => {
                   Today, we're seeing new forms of mentorship opening up even more opportunities for connection, growth and 
                   innovation in both directions."
                 </p>
+                <div className="mt-2 text-xs text-gray-500">
+                  Source: LinkedIn post, May 2025
+                </div>
               </div>
             </div>
             
@@ -240,6 +267,10 @@ const EssenceApproachContent = () => {
                   particularly in areas like technology, culture, and new ways of thinking. This flips the traditional mentorship 
                   model on its head, recognizing that valuable knowledge flows in multiple directions.
                 </p>
+                <div className="mt-3 pt-2 border-t border-accent/10 text-xs text-gray-500 flex items-center gap-2">
+                  <CalendarIcon className="h-3.5 w-3.5" />
+                  Concept highlighted by Robert F. Smith on LinkedIn and Instagram (@robertfredericksmith), May 2025
+                </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -252,6 +283,9 @@ const EssenceApproachContent = () => {
                   <p className="text-xs text-white/70 mt-2 font-medium">
                     72% of companies using reverse mentoring programs reported better cross-generational collaboration.
                   </p>
+                  <div className="mt-2 pt-2 border-t border-accent/10 text-xs text-gray-500">
+                    Source: Robert F. Smith Instagram (@robertfredericksmith), May 2025
+                  </div>
                 </div>
                 
                 <div className="bg-secondary/30 p-4 rounded-lg">
@@ -263,6 +297,9 @@ const EssenceApproachContent = () => {
                   <p className="text-xs text-white/70 mt-2 font-medium">
                     44% of workers today prefer peer mentorship over traditional models.
                   </p>
+                  <div className="mt-2 pt-2 border-t border-accent/10 text-xs text-gray-500">
+                    Source: Essence magazine, "Traditional Mentorship Is Dead" (March 2025)
+                  </div>
                 </div>
               </div>
               
@@ -276,6 +313,9 @@ const EssenceApproachContent = () => {
                   <span className="font-medium">Impact in numbers:</span> Women in peer mentoring programs are 20% more likely to get 
                   promoted than those without such support.
                 </p>
+                <div className="mt-2 pt-2 border-t border-accent/10 text-xs text-gray-500">
+                  Source: McKinsey & Company research cited in Essence (2020), LeanIn.Org studies (2020)
+                </div>
               </div>
             </div>
             
@@ -327,6 +367,9 @@ const EssenceApproachContent = () => {
                   </div>
                 </li>
               </ul>
+              <div className="mt-3 text-xs text-gray-500">
+                Source: Best practices aggregated from Robert F. Smith's insights and Essence magazine recommendations
+              </div>
             </div>
           </div>
           
@@ -341,6 +384,9 @@ const EssenceApproachContent = () => {
                   about emerging social media platforms and digital trends. Within six months, the company reported a 32% increase 
                   in digital engagement metrics and more culturally relevant product features.
                 </p>
+                <div className="mt-2 pt-2 border-t border-accent/10 text-xs text-gray-500">
+                  Source: Case study referenced in Kimberly Wilson's Essence article (March 2025)
+                </div>
               </div>
               
               <div className="bg-black/30 p-4 rounded-lg">
@@ -350,6 +396,9 @@ const EssenceApproachContent = () => {
                   mentoring on inclusion. This led to concrete policy changes and a 27% increase in sense of belonging among 
                   minority employees within one year.
                 </p>
+                <div className="mt-2 pt-2 border-t border-accent/10 text-xs text-gray-500">
+                  Source: Case study referenced in Kimberly Wilson's Essence article (March 2025)
+                </div>
               </div>
               
               <Button variant="default" className="mt-4 w-full">

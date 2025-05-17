@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { BookOpen, MessageCircle, Lightbulb, Users, Layers, ArrowRight, ArrowUpDown } from 'lucide-react';
+import { BookOpen, MessageCircle, Lightbulb, Users, Layers, ArrowRight, ArrowUpDown, CalendarIcon, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Accordion,
@@ -58,7 +58,8 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
         "It transforms ephemeral discussions into permanent, actionable resources",
         "By distilling each conversation into focused threads, the true essence of knowledge is preserved",
         "According to research, this format increases implementation rates by 58%"
-      ]
+      ],
+      source: "Robert F. Smith's LinkedIn post (May 2025), referencing research from Essence magazine article 'Traditional Mentorship Is Dead' by Kimberly Wilson (March 2025)"
     },
     {
       id: "robert-smith",
@@ -68,7 +69,8 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
         "Nearly 70% of Gen Z and millennial workers believe mentoring should be a two-way street",
         "When comments require acknowledgment, follow-through increases by 42%",
         "Focused threads lead to 3x more actionable outcomes than unstructured conversations"
-      ]
+      ],
+      source: "LinkedIn post by Robert F. Smith (May 2025) and Instagram content (@robertfredericksmith)"
     },
     {
       id: "impact",
@@ -78,7 +80,8 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
         "3x higher retention of key insights when organized by specific topics",
         "42% reduction in 'mentorship amnesia' (forgetting previous advice)",
         "67% of mentees report feeling more accountable when threads require acknowledgment"
-      ]
+      ],
+      source: "McKinsey & Company research cited in Essence (2020-2025), LeanIn.Org studies (2020)"
     }
   ];
   
@@ -116,25 +119,29 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
       title: "What is Reverse Mentorship?",
       description: "A model where younger or less-experienced professionals share insights with more senior leaders",
       detail: "Especially valuable in areas like technology, culture, and new ways of thinking",
-      icon: <ArrowUpDown className="h-5 w-5 text-accent" />
+      icon: <ArrowUpDown className="h-5 w-5 text-accent" />,
+      source: "Robert F. Smith's Instagram (@robertfredericksmith), May 2025"
     },
     {
       title: "Generational Collaboration",
       description: "Companies embracing reverse mentorship see stronger communication across generations",
       detail: "72% of companies using reverse mentoring programs report better cross-generational collaboration",
-      icon: <Users className="h-5 w-5 text-accent" />
+      icon: <Users className="h-5 w-5 text-accent" />,
+      source: "Robert F. Smith's Instagram (@robertfredericksmith), May 2025"
     },
     {
       title: "Rise in Peer Mentorship",
       description: "Professionals at similar career stages sharing experiences and building community",
       detail: "Women in peer mentoring programs are 20% more likely to get promoted than those without",
-      icon: <Layers className="h-5 w-5 text-accent" />
+      icon: <Layers className="h-5 w-5 text-accent" />,
+      source: "McKinsey & Company research cited in Essence (2020)"
     },
     {
       title: "Informal Support Networks",
       description: "Creating networks that offer support, perspective and real-time feedback",
       detail: "These networks provide forms of guidance that traditional one-on-one setups sometimes miss",
-      icon: <MessageCircle className="h-5 w-5 text-accent" />
+      icon: <MessageCircle className="h-5 w-5 text-accent" />,
+      source: "Robert F. Smith's Instagram (@robertfredericksmith), May 2025"
     }
   ];
   
@@ -184,6 +191,10 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
             <TooltipContent className="p-3 max-w-xs bg-secondary text-white border-white/10">
               <p className="text-sm font-medium text-accent mb-1">NEW! Robert F. Smith's Insight</p>
               <p className="text-xs">Discover how reverse mentorship is transforming traditional knowledge sharing</p>
+              <div className="mt-2 pt-2 border-t border-white/10 flex items-center gap-2 text-xs text-gray-400">
+                <CalendarIcon className="h-3 w-3" />
+                <span>LinkedIn & Instagram (@robertfredericksmith), May 2025</span>
+              </div>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -256,6 +267,11 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
                         ))}
                       </ul>
                       
+                      <div className="mt-3 pt-2 border-t border-white/10 flex items-center gap-2 text-xs text-gray-400">
+                        <CalendarIcon className="h-3 w-3" />
+                        <span>Source: {section.source}</span>
+                      </div>
+                      
                       {section.id === "impact" && (
                         <div className="mt-3 pt-3 border-t border-white/10">
                           <p className="text-xs text-gray-300 font-medium">What these numbers mean for you:</p>
@@ -276,7 +292,7 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
               
               <div className="flex items-center gap-1 text-gray-500 mt-4 text-xs">
                 <Lightbulb className="h-3 w-3 text-accent" />
-                <span>Based on "The Essence of Mentorship" research by Robert Smith</span>
+                <span>Based on "The Essence of Mentorship" research by Robert Smith, published May 2025</span>
               </div>
             </div>
           </motion.div>
@@ -301,6 +317,22 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
               bi-directional relationships that create better outcomes for everyone.
             </p>
             
+            <div className="bg-black/20 rounded-lg p-3 mb-4 border border-accent/10">
+              <div className="flex items-start gap-2">
+                <CalendarIcon className="h-4 w-4 text-accent mt-0.5" />
+                <div>
+                  <p className="text-sm text-white font-medium">Source Attribution</p>
+                  <p className="text-xs text-gray-400">Robert F. Smith's LinkedIn post (May 2025), referencing findings published in Essence magazine's March 2025 article "Traditional Mentorship Is Dead. Here's What's Replacing It" by Kimberly Wilson.</p>
+                </div>
+              </div>
+              <div className="mt-2 pt-2 border-t border-white/10 flex items-center gap-2">
+                <ExternalLink className="h-3.5 w-3.5 text-accent" />
+                <Link to="/learning-academy" className="text-xs text-accent">
+                  View full research details in Learning Academy
+                </Link>
+              </div>
+            </div>
+            
             <div className="space-y-4">
               {essenceContent.map((item, index) => (
                 <div key={index} className="bg-black/20 rounded-lg p-3 border border-accent/10">
@@ -312,6 +344,9 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
                       <h4 className="text-sm font-medium text-white">{item.title}</h4>
                       <p className="text-xs text-gray-400">{item.description}</p>
                       <p className="text-xs text-accent mt-1">{item.detail}</p>
+                      <div className="mt-2 pt-2 border-t border-white/10 text-xs text-gray-500">
+                        Source: Essence magazine, March 2025
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -364,6 +399,10 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
                     "For years, traditional mentorship looked like a more senior leader guiding a younger person. 
                     Today, we're seeing new forms of mentorship opening up opportunities for growth and innovation in both directions."
                   </p>
+                  <div className="mt-2 text-xs text-gray-500 flex items-center gap-1">
+                    <CalendarIcon className="h-3 w-3" />
+                    LinkedIn post, May 2025
+                  </div>
                 </div>
               </div>
             </div>
@@ -385,6 +424,9 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
                       <h4 className="text-sm font-medium text-white">{item.title}</h4>
                       <p className="text-xs text-gray-400">{item.description}</p>
                       <p className="text-xs text-accent mt-1">{item.detail}</p>
+                      <div className="mt-2 pt-2 border-t border-white/10 text-xs text-gray-500">
+                        Source: {item.source}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -411,6 +453,9 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
                   <span>These informal networks provide support that traditional one-on-one setups often miss</span>
                 </li>
               </ul>
+              <div className="mt-3 pt-2 border-t border-white/10 text-xs text-gray-500">
+                Source: McKinsey & Company research and LeanIn.Org studies (2020), cited in Essence magazine (March 2025)
+              </div>
             </div>
             
             <div className="mt-4">

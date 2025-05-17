@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { SuggestionTypewriter } from './SuggestionTypewriter';
-import { Info, MessageCircle, BookOpen, ArrowUpDown } from 'lucide-react';
+import { Info, MessageCircle, BookOpen, ArrowUpDown, Calendar, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { HintTrigger } from '@/components/HintTrigger';
 import { 
@@ -16,6 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Link } from 'react-router-dom';
 
 interface ThreadSuggestionsProps {
   callTitle: string;
@@ -145,7 +146,14 @@ export const ThreadSuggestions: React.FC<ThreadSuggestionsProps> = ({
             <TooltipContent side="left" className="max-w-xs bg-secondary border-accent/20 text-gray-200 p-3">
               <p className="text-sm font-medium text-accent mb-1">Robert F. Smith's Research</p>
               <p className="text-xs mb-2">44% of workers today prefer peer mentorship, and 70% of Gen Z and millennial workers believe mentoring should be a two-way street.</p>
-              <a className="text-xs underline text-accent/80" href="/learning-academy">Learn More</a>
+              <div className="flex items-center gap-1 text-xs text-gray-400 mb-2">
+                <Calendar className="h-3 w-3" />
+                <span>LinkedIn post, May 2025</span>
+              </div>
+              <Link to="/learning-academy" className="text-xs underline text-accent/80 flex items-center gap-1">
+                Learn More
+                <ExternalLink className="h-3 w-3" />
+              </Link>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -162,6 +170,10 @@ export const ThreadSuggestions: React.FC<ThreadSuggestionsProps> = ({
               </li>
             ))}
           </ul>
+          <div className="mt-2 pt-2 border-t border-accent/10 flex items-center gap-1 text-gray-500">
+            <Calendar className="h-3 w-3" />
+            <span>Source: Essence magazine, "Traditional Mentorship Is Dead" (March 2025)</span>
+          </div>
 
           <div className="mt-3 pt-3 border-t border-accent/10">
             <h4 className="font-medium text-accent mb-2 flex items-center gap-2">
@@ -176,6 +188,10 @@ export const ThreadSuggestions: React.FC<ThreadSuggestionsProps> = ({
                 </li>
               ))}
             </ul>
+            <div className="mt-2 pt-2 border-t border-accent/10 flex items-center gap-1 text-gray-500">
+              <Calendar className="h-3 w-3" />
+              <span>Source: Robert F. Smith LinkedIn post (May 2025) & Instagram (@robertfredericksmith)</span>
+            </div>
           </div>
           
           <div className="mt-3 flex justify-between items-center">
