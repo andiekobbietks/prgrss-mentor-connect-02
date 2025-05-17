@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -15,6 +16,8 @@ interface NewCommentFormProps {
   setThreadTopic?: (topic: string) => void;
   enforceThreadTopic?: boolean;
   initialContent?: string;
+  disabled?: boolean;
+  onDisabledClick?: () => void;
 }
 
 export const NewCommentForm: React.FC<NewCommentFormProps> = ({ 
@@ -27,7 +30,9 @@ export const NewCommentForm: React.FC<NewCommentFormProps> = ({
   threadTopic,
   setThreadTopic,
   enforceThreadTopic = false,
-  initialContent = ''
+  initialContent = '',
+  disabled = false,
+  onDisabledClick
 }) => {
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -128,9 +133,18 @@ export const NewCommentForm: React.FC<NewCommentFormProps> = ({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="min-h-[100px] bg-card"
+          disabled={disabled}
+          onClick={() => {
+            if (disabled && onDisabledClick) {
+              onDisabledClick();
+            }
+          }}
         />
         <div className="flex justify-end">
-          <Button type="submit" disabled={!content.trim() || (!parentId && !localThreadTopic && !enforceThreadTopic)}>
+          <Button 
+            type="submit" 
+            disabled={disabled || !content.trim() || (!parentId && !localThreadTopic && !enforceThreadTopic)}
+          >
             Submit
           </Button>
         </div>
@@ -138,3 +152,4 @@ export const NewCommentForm: React.FC<NewCommentFormProps> = ({
     </form>
   );
 };
+
