@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { BookOpen, ArrowRight, Share, Layers, MessageCircle, Users } from 'lucide-react';
+import { BookOpen, ArrowRight, Share, Layers, MessageCircle, Users, ArrowUpDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
@@ -73,106 +73,295 @@ const learningModules = [
   }
 ];
 
+// Updated EssenceApproachContent to prominently feature Reverse Mentorship
 const EssenceApproachContent = () => {
+  const [activeTab, setActiveTab] = useState<"essence" | "reverse">("essence");
+  
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white">The Essence Approach to Modern Mentorship</h2>
-      
-      <div className="bg-secondary/20 rounded-lg p-6 border border-accent/20">
-        <h3 className="text-xl font-medium text-accent mb-4">What is the "Essence" Approach?</h3>
-        <p className="text-gray-300 mb-4">
-          The "Essence" approach, highlighted in Robert F. Smith's research, recognizes that traditional top-down mentorship 
-          is evolving into more collaborative, bi-directional relationships between mentors and mentees.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-secondary/30 p-4 rounded-lg">
-            <div className="flex items-center gap-2 mb-2">
-              <Users className="h-5 w-5 text-accent" />
-              <h4 className="font-medium text-white">Peer Mentorship</h4>
-            </div>
-            <p className="text-sm text-gray-400">
-              According to Essence, 44% of workers today prefer peer mentorship, creating more horizontal learning opportunities.
-            </p>
-            <p className="text-xs text-accent mt-2">
-              This means nearly half of professionals find more value in learning from colleagues at similar career stages.
-            </p>
-          </div>
-          
-          <div className="bg-secondary/30 p-4 rounded-lg">
-            <div className="flex items-center gap-2 mb-2">
-              <Layers className="h-5 w-5 text-accent" />
-              <h4 className="font-medium text-white">Two-Way Growth</h4>
-            </div>
-            <p className="text-sm text-gray-400">
-              Nearly 70% of Gen Z and millennial workers believe mentoring should be a two-way street of mutual learning.
-            </p>
-            <p className="text-xs text-accent mt-2">
-              This represents a fundamental shift from the traditional mentorship paradigm toward collaborative growth.
-            </p>
-          </div>
-        </div>
-        
-        <div className="mt-6 bg-black/30 p-4 rounded-lg">
-          <h4 className="font-medium text-accent mb-2">Key Research Findings</h4>
-          <ul className="space-y-3 text-sm text-gray-300">
-            <li className="flex items-start gap-2">
-              <span className="text-accent mt-1">•</span>
-              <span>72% of companies using reverse mentoring programs reported better cross-generational collaboration and communication</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-accent mt-1">•</span>
-              <span>Women in peer mentoring programs are 20% more likely to get promoted than those without such support</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-accent mt-1">•</span>
-              <span>Black women are 24% less likely than white men to have a mentor, highlighting the equity gap that new mentorship models can help address</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-accent mt-1">•</span>
-              <span>Implementation rates increase by 58% when mentorship follows a structured acknowledgment approach</span>
-            </li>
-          </ul>
-        </div>
+      <div className="flex gap-2 mb-6">
+        <Button 
+          variant={activeTab === 'essence' ? "default" : "outline"} 
+          onClick={() => setActiveTab('essence')}
+          className="flex-1"
+        >
+          <Users className="h-4 w-4 mr-2" />
+          The Essence Approach
+        </Button>
+        <Button 
+          variant={activeTab === 'reverse' ? "default" : "outline"} 
+          onClick={() => setActiveTab('reverse')}
+          className="flex-1"
+        >
+          <ArrowUpDown className="h-4 w-4 mr-2" />
+          Reverse Mentorship
+        </Button>
       </div>
-      
-      <div className="bg-secondary/20 rounded-lg p-6 border border-accent/20">
-        <h3 className="text-xl font-medium text-accent mb-4">Applying the Essence Approach in PRGRSS</h3>
-        <div className="space-y-4">
-          <div className="flex items-start gap-3">
-            <div className="bg-accent/20 rounded-full p-2 mt-1">
-              <MessageCircle className="h-5 w-5 text-accent" />
+
+      {activeTab === "essence" && (
+        <>
+          <h2 className="text-2xl font-bold text-white">The Essence Approach to Modern Mentorship</h2>
+          
+          <div className="bg-secondary/20 rounded-lg p-6 border border-accent/20">
+            <h3 className="text-xl font-medium text-accent mb-4">What is the "Essence" Approach?</h3>
+            <p className="text-gray-300 mb-4">
+              The "Essence" approach, highlighted in Robert F. Smith's research, recognizes that traditional top-down mentorship 
+              is evolving into more collaborative, bi-directional relationships between mentors and mentees.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              <div className="bg-secondary/30 p-4 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Users className="h-5 w-5 text-accent" />
+                  <h4 className="font-medium text-white">Peer Mentorship</h4>
+                </div>
+                <p className="text-sm text-gray-400">
+                  According to Essence, 44% of workers today prefer peer mentorship, creating more horizontal learning opportunities.
+                </p>
+                <p className="text-xs text-accent mt-2">
+                  This means nearly half of professionals find more value in learning from colleagues at similar career stages.
+                </p>
+              </div>
+              
+              <div className="bg-secondary/30 p-4 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <Layers className="h-5 w-5 text-accent" />
+                  <h4 className="font-medium text-white">Two-Way Growth</h4>
+                </div>
+                <p className="text-sm text-gray-400">
+                  Nearly 70% of Gen Z and millennial workers believe mentoring should be a two-way street of mutual learning.
+                </p>
+                <p className="text-xs text-accent mt-2">
+                  This represents a fundamental shift from the traditional mentorship paradigm toward collaborative growth.
+                </p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-medium text-white">Call Library Thread System</h4>
-              <p className="text-sm text-gray-400">
-                Our thread system implements the Essence approach by requiring acknowledgment before continuing conversations.
-                This creates mutual accountability and increases implementation rates by 58%.
-              </p>
+            
+            <div className="mt-6 bg-black/30 p-4 rounded-lg">
+              <h4 className="font-medium text-accent mb-2">Key Research Findings</h4>
+              <ul className="space-y-3 text-sm text-gray-300">
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-1">•</span>
+                  <span>72% of companies using reverse mentoring programs reported better cross-generational collaboration and communication</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-1">•</span>
+                  <span>Women in peer mentoring programs are 20% more likely to get promoted than those without such support</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-1">•</span>
+                  <span>Black women are 24% less likely than white men to have a mentor, highlighting the equity gap that new mentorship models can help address</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-1">•</span>
+                  <span>Implementation rates increase by 58% when mentorship follows a structured acknowledgment approach</span>
+                </li>
+              </ul>
             </div>
           </div>
           
-          <div className="flex items-start gap-3">
-            <div className="bg-accent/20 rounded-full p-2 mt-1">
-              <Users className="h-5 w-5 text-accent" />
+          <div className="bg-secondary/20 rounded-lg p-6 border border-accent/20">
+            <h3 className="text-xl font-medium text-accent mb-4">Applying the Essence Approach in PRGRSS</h3>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="bg-accent/20 rounded-full p-2 mt-1">
+                  <MessageCircle className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-white">Call Library Thread System</h4>
+                  <p className="text-sm text-gray-400">
+                    Our thread system implements the Essence approach by requiring acknowledgment before continuing conversations.
+                    This creates mutual accountability and increases implementation rates by 58%.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <div className="bg-accent/20 rounded-full p-2 mt-1">
+                  <Users className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-white">Peer Mentorship Circles</h4>
+                  <p className="text-sm text-gray-400">
+                    PRGRSS facilitates peer mentoring circles where members learn from each other's experiences,
+                    work through challenges together, and build meaningful connections - increasing promotion chances by 20%.
+                  </p>
+                </div>
+              </div>
+              
+              <Button variant="outline" className="mt-4 w-full">
+                <Link to="/call-library" className="w-full flex items-center justify-center gap-2">
+                  <BookOpen className="h-4 w-4" />
+                  Explore the Call Library
+                </Link>
+              </Button>
             </div>
-            <div>
-              <h4 className="font-medium text-white">Peer Mentorship Circles</h4>
-              <p className="text-sm text-gray-400">
-                PRGRSS facilitates peer mentoring circles where members learn from each other's experiences,
-                work through challenges together, and build meaningful connections - increasing promotion chances by 20%.
-              </p>
+          </div>
+        </>
+      )}
+
+      {activeTab === "reverse" && (
+        <>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold text-white">Reverse Mentorship</h2>
+            <div className="px-3 py-1 bg-accent/20 rounded-full text-accent text-xs">
+              Featured by Robert F. Smith
             </div>
           </div>
           
-          <Button variant="outline" className="mt-4 w-full">
-            <Link to="/call-library" className="w-full flex items-center justify-center gap-2">
-              <BookOpen className="h-4 w-4" />
-              Explore the Call Library
-            </Link>
-          </Button>
-        </div>
-      </div>
+          <div className="bg-secondary/20 rounded-lg p-6 border border-accent/20 mb-6">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="rounded-full overflow-hidden w-16 h-16 flex-shrink-0">
+                <img 
+                  src="https://lovable-uploads/5c8929ae-5ec6-4ae4-98c3-d516bc8a4794.png" 
+                  alt="Robert F. Smith" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h3 className="text-xl font-medium text-white">Robert F. Smith</h3>
+                <p className="text-sm text-gray-400">Founder, Chairman and CEO at Vista Equity Partners</p>
+                <p className="text-sm italic text-accent/80 mt-2">
+                  "For years, traditional mentorship looked like a more senior leader with experience guiding a younger person. 
+                  Today, we're seeing new forms of mentorship opening up even more opportunities for connection, growth and 
+                  innovation in both directions."
+                </p>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="bg-black/30 rounded-lg p-4">
+                <h4 className="font-medium text-accent mb-2 flex items-center gap-2">
+                  <ArrowUpDown className="h-4 w-4" /> 
+                  What is Reverse Mentorship?
+                </h4>
+                <p className="text-sm text-gray-300">
+                  Reverse Mentorship is a model where younger or less-experienced professionals share their insights with more senior leaders, 
+                  particularly in areas like technology, culture, and new ways of thinking. This flips the traditional mentorship 
+                  model on its head, recognizing that valuable knowledge flows in multiple directions.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-secondary/30 p-4 rounded-lg">
+                  <h4 className="font-medium text-accent mb-2">A Powerful Exchange</h4>
+                  <p className="text-sm text-gray-300">
+                    Companies that embrace reverse mentorship are seeing stronger communication and collaboration across generations. 
+                    This approach bridges generational divides and creates more inclusive workplaces.
+                  </p>
+                  <p className="text-xs text-white/70 mt-2 font-medium">
+                    72% of companies using reverse mentoring programs reported better cross-generational collaboration.
+                  </p>
+                </div>
+                
+                <div className="bg-secondary/30 p-4 rounded-lg">
+                  <h4 className="font-medium text-accent mb-2">Rise in Peer Mentorship</h4>
+                  <p className="text-sm text-gray-300">
+                    This model brings together professionals at similar stages of their careers to share experiences, 
+                    build community and learn from one another, creating horizontal knowledge networks.
+                  </p>
+                  <p className="text-xs text-white/70 mt-2 font-medium">
+                    44% of workers today prefer peer mentorship over traditional models.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="bg-black/30 rounded-lg p-4">
+                <h4 className="font-medium text-accent mb-2">Lifting One Another Up</h4>
+                <p className="text-sm text-gray-300">
+                  These informal networks offer support, perspective, and real-time feedback that traditional 
+                  one-on-one setups sometimes miss. They create safe spaces for vulnerability and authentic sharing.
+                </p>
+                <p className="text-xs text-white/70 mt-2">
+                  <span className="font-medium">Impact in numbers:</span> Women in peer mentoring programs are 20% more likely to get 
+                  promoted than those without such support.
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-6 border-t border-white/10 pt-6">
+              <h4 className="font-medium text-white mb-3">Implementing Reverse Mentorship</h4>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <div className="bg-accent/20 rounded-full h-6 w-6 flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-accent text-xs font-medium">1</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">Create Structured Exchanges</p>
+                    <p className="text-xs text-gray-400">
+                      Formalize the reverse mentorship process with clear objectives, meeting cadences, and topics for discussion.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="bg-accent/20 rounded-full h-6 w-6 flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-accent text-xs font-medium">2</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">Focus on Specific Knowledge Areas</p>
+                    <p className="text-xs text-gray-400">
+                      Identify areas where junior team members can offer unique insights: digital trends, emerging technologies, or cultural shifts.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="bg-accent/20 rounded-full h-6 w-6 flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-accent text-xs font-medium">3</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">Create Psychological Safety</p>
+                    <p className="text-xs text-gray-400">
+                      Establish ground rules that encourage open dialogue where hierarchies are temporarily suspended.
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="bg-accent/20 rounded-full h-6 w-6 flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-accent text-xs font-medium">4</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">Document and Share Learnings</p>
+                    <p className="text-xs text-gray-400">
+                      Use the Call Library to capture insights from reverse mentorship exchanges, creating a knowledge base that benefits the entire organization.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="bg-secondary/20 rounded-lg p-6 border border-accent/20">
+            <h3 className="text-xl font-medium text-accent mb-4">Case Studies: Reverse Mentorship in Action</h3>
+            
+            <div className="space-y-6">
+              <div className="bg-black/30 p-4 rounded-lg">
+                <h4 className="font-medium text-white mb-2">Tech Industry: Closing Digital Divides</h4>
+                <p className="text-sm text-gray-300">
+                  A major tech company implemented a reverse mentorship program where Gen Z employees taught senior executives 
+                  about emerging social media platforms and digital trends. Within six months, the company reported a 32% increase 
+                  in digital engagement metrics and more culturally relevant product features.
+                </p>
+              </div>
+              
+              <div className="bg-black/30 p-4 rounded-lg">
+                <h4 className="font-medium text-white mb-2">Financial Services: DEI Insights</h4>
+                <p className="text-sm text-gray-300">
+                  A financial institution paired senior leaders with employees from underrepresented backgrounds for reverse 
+                  mentoring on inclusion. This led to concrete policy changes and a 27% increase in sense of belonging among 
+                  minority employees within one year.
+                </p>
+              </div>
+              
+              <Button variant="default" className="mt-4 w-full">
+                <Link to="/call-library" className="w-full flex items-center justify-center gap-2">
+                  <ArrowUpDown className="h-4 w-4" />
+                  Apply Reverse Mentorship in the Call Library
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

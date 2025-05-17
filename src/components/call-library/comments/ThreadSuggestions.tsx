@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { SuggestionTypewriter } from './SuggestionTypewriter';
-import { Info, MessageCircle, BookOpen } from 'lucide-react';
+import { Info, MessageCircle, BookOpen, ArrowUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { HintTrigger } from '@/components/HintTrigger';
 import { 
@@ -10,6 +10,12 @@ import {
   AccordionItem,
   AccordionTrigger 
 } from '@/components/ui/accordion';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ThreadSuggestionsProps {
   callTitle: string;
@@ -30,7 +36,7 @@ export const ThreadSuggestions: React.FC<ThreadSuggestionsProps> = ({
   // Enhanced thread rules with more context
   const threadRules = [
     "Keep your comment relevant to this specific thread - this helps create a searchable knowledge base",
-    "Always acknowledge (mark as read) comments before replying - just like confirming you've seen a message",
+    "Always acknowledge (mark as read) comments before replying - this creates mutual accountability and momentum",
     "Switch to in-app messaging for tangential discussions - keeps the thread clean and focused",
     "Book another appointment for new topics that deserve their own thread - this maintains organization",
     "Focus on actionable insights that will build value over time - create lasting resources"
@@ -42,6 +48,14 @@ export const ThreadSuggestions: React.FC<ThreadSuggestionsProps> = ({
     "Each thread builds a searchable knowledge base that grows in value over time",
     "Studies show that structured follow-ups increase implementation rates by 65%",
     "This approach creates accountability and continuity between mentoring sessions"
+  ];
+
+  // New reverse mentorship content based on Robert F. Smith's insights
+  const reverseMentorshipContent = [
+    "Reverse mentorship flips traditional models by having junior members mentor senior ones",
+    "According to Robert F. Smith, 70% of Gen Z and millennial workers believe mentorship should be two-way",
+    "Companies using reverse mentoring see 72% better cross-generational collaboration",
+    "These threads facilitate both traditional and reverse mentorship exchanges"
   ];
   
   // Generate contextual suggestions based on the call details
@@ -55,6 +69,14 @@ export const ThreadSuggestions: React.FC<ThreadSuggestionsProps> = ({
       `What measurable outcomes are you hoping to achieve from the insights in this call?`,
       `Could you share any challenges you anticipate in implementing what we discussed?`
     ];
+
+    // New reverse mentorship suggestions
+    const reverseMentorshipSuggestions = [
+      `What fresh perspective could you share with me about ${threadTopic || callCategory}?`,
+      `How do newer approaches to ${threadTopic || callCategory} differ from traditional methods?`,
+      `Could you recommend any modern tools or resources that could help me understand ${threadTopic || callCategory} better?`,
+      `What trends or cultural shifts are you seeing in ${threadTopic || callCategory} that I might be missing?`
+    ];
     
     // If there's a thread topic, add some topic-specific suggestions
     if (threadTopic) {
@@ -65,11 +87,12 @@ export const ThreadSuggestions: React.FC<ThreadSuggestionsProps> = ({
         `What resources would help you advance further with "${threadTopic}"?`,
         `What's one small step you could take this week to progress on "${threadTopic}"?`,
         `How would you measure success in implementing our discussion on "${threadTopic}"?`,
-        ...defaultSuggestions
+        ...defaultSuggestions,
+        ...reverseMentorshipSuggestions
       ];
     }
     
-    return defaultSuggestions;
+    return [...defaultSuggestions, ...reverseMentorshipSuggestions];
   };
   
   // Auto-switch between tabs
@@ -105,15 +128,27 @@ export const ThreadSuggestions: React.FC<ThreadSuggestionsProps> = ({
           </Button>
         </div>
         
-        <Button 
-          variant="ghost" 
-          size="sm"
-          onClick={() => setShowPhilosophy(!showPhilosophy)}
-          className="text-xs text-accent border-accent/20 hover:bg-accent/10 px-2 py-1 h-8"
-        >
-          <BookOpen className="h-3.5 w-3.5 mr-1" />
-          Why This Matters
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setShowPhilosophy(!showPhilosophy)}
+                className="text-xs text-accent border-accent/20 hover:bg-accent/10 px-2 py-1 h-8 relative"
+              >
+                <BookOpen className="h-3.5 w-3.5 mr-1" />
+                Why This Matters
+                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="left" className="max-w-xs bg-secondary border-accent/20 text-gray-200 p-3">
+              <p className="text-sm font-medium text-accent mb-1">Robert F. Smith's Research</p>
+              <p className="text-xs mb-2">44% of workers today prefer peer mentorship, and 70% of Gen Z and millennial workers believe mentoring should be a two-way street.</p>
+              <a className="text-xs underline text-accent/80" href="/learning-academy">Learn More</a>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       
       {showPhilosophy && (
@@ -127,8 +162,24 @@ export const ThreadSuggestions: React.FC<ThreadSuggestionsProps> = ({
               </li>
             ))}
           </ul>
+
+          <div className="mt-3 pt-3 border-t border-accent/10">
+            <h4 className="font-medium text-accent mb-2 flex items-center gap-2">
+              <ArrowUpDown className="h-3.5 w-3.5" />
+              Reverse Mentorship Insights
+            </h4>
+            <ul className="space-y-2 text-gray-300">
+              {reverseMentorshipContent.map((item, index) => (
+                <li key={index} className="flex items-start gap-2">
+                  <span className="text-accent">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
           <div className="mt-3 flex justify-between items-center">
-            <span className="text-xs text-gray-400">Based on mentorship research by Robert Smith</span>
+            <span className="text-xs text-gray-400">Based on mentorship research by Robert F. Smith</span>
             <HintTrigger stepId="call-library-philosophy" className="text-accent hover:text-accent/80">
               <span className="text-xs underline">Learn more</span>
             </HintTrigger>
@@ -177,6 +228,10 @@ export const ThreadSuggestions: React.FC<ThreadSuggestionsProps> = ({
               <li className="flex items-start gap-2">
                 <span className="text-accent">•</span>
                 <span>Key insights from threads are automatically highlighted for later reference</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-accent">•</span>
+                <span>Reverse mentorship exchanges are encouraged through focused follow-ups</span>
               </li>
             </ul>
           </AccordionContent>

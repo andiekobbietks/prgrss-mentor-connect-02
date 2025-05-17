@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { BookOpen, MessageCircle, Lightbulb, Users, Layers, ArrowRight } from 'lucide-react';
+import { BookOpen, MessageCircle, Lightbulb, Users, Layers, ArrowRight, ArrowUpDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Accordion,
@@ -10,13 +9,19 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Link } from 'react-router-dom';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CallLibraryGuideProps {
   onOpenExplainer: () => void;
 }
 
 export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplainer }) => {
-  const [activeSection, setActiveSection] = useState<'relevance' | 'philosophy' | 'essence'>('relevance');
+  const [activeSection, setActiveSection] = useState<'relevance' | 'philosophy' | 'essence' | 'reverse'>('relevance');
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   
   // Enhanced content for the guidelines
@@ -57,7 +62,7 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
     },
     {
       id: "robert-smith",
-      title: "Robert Smith's Mentorship Research",
+      title: "Robert F. Smith's Mentorship Research",
       content: [
         "Smith's research found that 44% of workers today prefer peer mentorship over traditional models",
         "Nearly 70% of Gen Z and millennial workers believe mentoring should be a two-way street",
@@ -104,6 +109,34 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
       icon: <BookOpen className="h-5 w-5 text-accent" />
     }
   ];
+
+  // New Reverse Mentorship content based on Robert F. Smith's insights
+  const reverseMentorshipContent = [
+    {
+      title: "What is Reverse Mentorship?",
+      description: "A model where younger or less-experienced professionals share insights with more senior leaders",
+      detail: "Especially valuable in areas like technology, culture, and new ways of thinking",
+      icon: <ArrowUpDown className="h-5 w-5 text-accent" />
+    },
+    {
+      title: "Generational Collaboration",
+      description: "Companies embracing reverse mentorship see stronger communication across generations",
+      detail: "72% of companies using reverse mentoring programs report better cross-generational collaboration",
+      icon: <Users className="h-5 w-5 text-accent" />
+    },
+    {
+      title: "Rise in Peer Mentorship",
+      description: "Professionals at similar career stages sharing experiences and building community",
+      detail: "Women in peer mentoring programs are 20% more likely to get promoted than those without",
+      icon: <Layers className="h-5 w-5 text-accent" />
+    },
+    {
+      title: "Informal Support Networks",
+      description: "Creating networks that offer support, perspective and real-time feedback",
+      detail: "These networks provide forms of guidance that traditional one-on-one setups sometimes miss",
+      icon: <MessageCircle className="h-5 w-5 text-accent" />
+    }
+  ];
   
   return (
     <>
@@ -135,6 +168,25 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
           <Users className="h-4 w-4 mr-2" />
           Essence Approach
         </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button 
+                variant={activeSection === 'reverse' ? "secondary" : "outline"}
+                size="sm" 
+                onClick={() => setActiveSection('reverse')}
+                className={activeSection === 'reverse' ? "bg-secondary/70" : "border-secondary/30 bg-accent/5"}
+              >
+                <ArrowUpDown className="h-4 w-4 mr-2" />
+                Reverse Mentorship
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="p-3 max-w-xs bg-secondary text-white border-white/10">
+              <p className="text-sm font-medium text-accent mb-1">NEW! Robert F. Smith's Insight</p>
+              <p className="text-xs">Discover how reverse mentorship is transforming traditional knowledge sharing</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       
       <AnimatePresence mode="wait">
@@ -278,6 +330,99 @@ export const CallLibraryGuide: React.FC<CallLibraryGuideProps> = ({ onOpenExplai
                   </Button>
                 </Link>
               </div>
+            </div>
+          </motion.div>
+        )}
+        
+        {activeSection === 'reverse' && (
+          <motion.div
+            key="reverse"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="mb-6 bg-secondary/10 rounded-lg p-4 border border-secondary/20"
+          >
+            <h3 className="text-md font-semibold flex items-center gap-2 text-accent">
+              <ArrowUpDown className="h-4 w-4" />
+              Reverse Mentorship: A New Paradigm
+            </h3>
+            
+            <div className="bg-black/30 p-3 rounded-lg mt-3 mb-4">
+              <div className="flex items-start gap-3">
+                <div className="rounded-full overflow-hidden w-10 h-10 flex-shrink-0">
+                  <img 
+                    src="https://lovable-uploads/5c8929ae-5ec6-4ae4-98c3-d516bc8a4794.png" 
+                    alt="Robert F. Smith" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-white">Robert F. Smith</p>
+                  <p className="text-xs text-gray-400">Founder, Chairman and CEO at Vista Equity Partners</p>
+                  <p className="text-xs italic text-accent/80 mt-1">
+                    "For years, traditional mentorship looked like a more senior leader guiding a younger person. 
+                    Today, we're seeing new forms of mentorship opening up opportunities for growth and innovation in both directions."
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <p className="text-sm text-gray-300 mt-3 mb-4">
+              According to research published in Essence, 44% of workers today prefer peer mentorship, 
+              and nearly 70% of Gen Z and millennial workers believe that mentoring should be a two-way street. 
+              This represents a fundamental shift in how we approach knowledge sharing and professional development.
+            </p>
+            
+            <div className="space-y-4 mt-5">
+              {reverseMentorshipContent.map((item, index) => (
+                <div key={index} className="bg-black/20 rounded-lg p-3 border border-accent/10">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-accent/20 rounded-full p-2 flex-shrink-0">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-white">{item.title}</h4>
+                      <p className="text-xs text-gray-400">{item.description}</p>
+                      <p className="text-xs text-accent mt-1">{item.detail}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 bg-black/30 p-4 rounded-lg border border-accent/10">
+              <h4 className="font-medium text-accent mb-2 text-sm">Real Impact of Reverse Mentorship</h4>
+              <ul className="space-y-2 text-xs text-gray-300">
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-1">•</span>
+                  <span>Black women are 24% less likely than white men to have a mentor, highlighting the equity gap that new mentorship models can help address</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-1">•</span>
+                  <span>72% of companies using reverse mentoring programs reported better cross-generational collaboration and communication</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-1">•</span>
+                  <span>Women in peer mentoring programs are 20% more likely to get promoted than those without such support</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-1">•</span>
+                  <span>These informal networks provide support that traditional one-on-one setups often miss</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div className="mt-4">
+              <Link to="/learning-academy">
+                <Button className="w-full bg-accent hover:bg-accent/90 text-black">
+                  Learn More About Reverse Mentorship
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              </Link>
+              <p className="text-xs text-gray-500 mt-2 text-center">
+                Explore our Learning Academy module on this transformative approach
+              </p>
             </div>
           </motion.div>
         )}
