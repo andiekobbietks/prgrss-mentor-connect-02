@@ -44,9 +44,10 @@ interface CallDetailProps {
   call: CallEntryType;
   userRole: 'mentor' | 'mentee' | 'admin';
   userId: string;
+  enforceReadReceipts?: boolean;
 }
 
-export const CallDetail: React.FC<CallDetailProps> = ({ call, userRole, userId }) => {
+export const CallDetail: React.FC<CallDetailProps> = ({ call, userRole, userId, enforceReadReceipts }) => {
   const [showComments, setShowComments] = useState(false);
   
   const hasUnreadComments = call.comments.some(comment => 
