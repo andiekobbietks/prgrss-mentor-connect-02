@@ -1,24 +1,20 @@
 
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { HomeCarousel } from "../components/HomeCarousel";
 import { HintBox } from "../components/HintBox";
 import { ShareFeedbackButton } from "../components/ShareFeedbackButton";
 import { TourTarget } from "@/components/TourTarget";
 import { useTour } from "@/contexts/TourContext";
-import { MessageSquare, Calendar, User, Info } from "lucide-react";
+import { MessageSquare, Calendar, User, Info, BookOpen, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
   const [activeHint, setActiveHint] = useState<string | null>(null);
   const { isFirstVisit, startTour } = useTour();
-  
-  useEffect(() => {
-    // If this is first visit and we're on the home page, auto-start the tour
-    if (isFirstVisit) {
-      // We don't auto-start here because the SplashScreen handles it
-    }
-  }, [isFirstVisit]);
   
   const handleShareFeedback = () => {
     setActiveHint("feedback");
@@ -30,6 +26,13 @@ const Home: React.FC = () => {
 
   const handleSafetyClick = () => {
     setActiveHint("safety");
+  };
+
+  const handleReverseMentorshipClick = () => {
+    setActiveHint("reverse-mentorship");
+    setTimeout(() => {
+      navigate('/call-library');
+    }, 3000);
   };
 
   return (
@@ -72,6 +75,28 @@ const Home: React.FC = () => {
           </div>
         </TourTarget>
 
+        {/* Reverse Mentorship Card */}
+        <TourTarget id="reverse-mentorship" className="relative overflow-hidden rounded-xl bg-card p-6">
+          <div className="flex justify-between items-start mb-2">
+            <h2 className="text-lg font-semibold flex items-center gap-2">
+              <ArrowUpDown className="h-4 w-4 text-accent" />
+              Reverse Mentorship
+            </h2>
+            <button onClick={handleReverseMentorshipClick} className="text-accent">
+              <Info className="h-4 w-4" />
+            </button>
+          </div>
+          <p className="text-sm opacity-80">
+            Nearly 70% of Gen Z and millennial workers believe mentoring should be a two-way street.
+          </p>
+          <div className="mt-3 flex gap-2">
+            <BookOpen className="h-4 w-4 text-accent" />
+            <span className="text-xs text-accent">
+              Learn more in the Call Library and Learning Academy
+            </span>
+          </div>
+        </TourTarget>
+
         {/* Safety Information */}
         <TourTarget id="safety-info" className="relative overflow-hidden rounded-xl bg-card p-6">
           <div className="flex justify-between items-start mb-2">
@@ -87,13 +112,8 @@ const Home: React.FC = () => {
           </div>
         </TourTarget>
       
-        {/* Feedback Button */}
-        <TourTarget id="feedback-button" className="mt-8 flex justify-center">
-          <Button onClick={handleShareFeedback} className="bg-accent text-black px-5 py-2 rounded-full flex items-center gap-2">
-            <Info className="w-4 h-4" />
-            <span>Share feedback</span>
-          </Button>
-        </TourTarget>
+        {/* Navigation Buttons */}
+        <ShareFeedbackButton onClick={handleShareFeedback} />
       </motion.div>
       
       {/* Hint Boxes */}
@@ -117,6 +137,15 @@ const Home: React.FC = () => {
         <HintBox
           title="Share Your Thoughts"
           description="Your feedback shapes PRGRSS. Use our in-app form to share your experience and help us improve."
+          position="bottom"
+          onClose={() => setActiveHint(null)}
+        />
+      )}
+
+      {activeHint === "reverse-mentorship" && (
+        <HintBox
+          title="Reverse Mentorship"
+          description="Younger professionals share knowledge with senior leaders, especially in technology and culture. This two-way mentorship creates stronger teams and helps bridge generational gaps. Redirecting you to the Call Library..."
           position="bottom"
           onClose={() => setActiveHint(null)}
         />

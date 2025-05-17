@@ -14,7 +14,10 @@ export function HintContent({ arrowPlacement }: HintContentProps) {
   const step = steps[currentStep];
 
   // Check if this is a reverse mentorship related hint
-  const isReverseMentorshipHint = step.id === 'call-library-philosophy' || step.id === 'reverse-mentorship';
+  const isReverseMentorshipHint = step.id === 'call-library-philosophy' || 
+                                 step.id === 'reverse-mentorship' ||
+                                 step.id === 'call-library-button' ||
+                                 step.id === 'learning-academy-button';
 
   const renderArrow = () => {
     if (!arrowPlacement) return null;
@@ -29,6 +32,39 @@ export function HintContent({ arrowPlacement }: HintContentProps) {
     return <div className={arrowClasses[arrowPlacement]} aria-hidden="true" />;
   };
 
+  // Customize description for reverse mentorship hints
+  let reverseMentorshipContent = null;
+  if (isReverseMentorshipHint) {
+    if (step.id === 'call-library-button') {
+      reverseMentorshipContent = (
+        <div className="mt-3 pt-3 border-t border-white/10">
+          <p className="text-xs text-accent font-medium">Reverse Mentorship in Call Library:</p>
+          <p className="text-xs text-gray-300 mt-1 italic">
+            "Explore real examples of how younger professionals share valuable insights with senior leaders through our recorded call samples."
+          </p>
+        </div>
+      );
+    } else if (step.id === 'learning-academy-button') {
+      reverseMentorshipContent = (
+        <div className="mt-3 pt-3 border-t border-white/10">
+          <p className="text-xs text-accent font-medium">Learning Academy & Reverse Mentorship:</p>
+          <p className="text-xs text-gray-300 mt-1 italic">
+            "Discover how peer mentorship networks offer support and real-time feedback that traditional mentorship setups sometimes miss."
+          </p>
+        </div>
+      );
+    } else {
+      reverseMentorshipContent = (
+        <div className="mt-3 pt-3 border-t border-white/10">
+          <p className="text-xs text-accent font-medium">Robert F. Smith on Reverse Mentorship:</p>
+          <p className="text-xs text-gray-300 mt-1 italic">
+            "Nearly 70% of Gen Z and millennial workers believe that mentoring should be a two-way street. At every level, mentorship should be about mutual learning and growth."
+          </p>
+        </div>
+      );
+    }
+  }
+
   return (
     <Card className="w-[300px] shadow-lg bg-secondary text-white relative rounded-xl border-white/10 overflow-visible" role="dialog" aria-labelledby={`hint-title-${step.id}`}>
       {renderArrow()}
@@ -41,14 +77,7 @@ export function HintContent({ arrowPlacement }: HintContentProps) {
       <CardContent>
         <p className="text-sm text-gray-300">{step.description}</p>
         
-        {isReverseMentorshipHint && (
-          <div className="mt-3 pt-3 border-t border-white/10">
-            <p className="text-xs text-accent font-medium">Robert F. Smith on Reverse Mentorship:</p>
-            <p className="text-xs text-gray-300 mt-1 italic">
-              "Nearly 70% of Gen Z and millennial workers believe that mentoring should be a two-way street. At every level, mentorship should be about mutual learning and growth."
-            </p>
-          </div>
-        )}
+        {reverseMentorshipContent}
       </CardContent>
       <CardFooter className="flex flex-col pb-4 pt-2">
         <div className="flex justify-between w-full mb-2">
