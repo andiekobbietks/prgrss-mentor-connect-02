@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Coins } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -39,8 +39,52 @@ export const CreditCoin: React.FC<CreditCoinProps> = ({
   const remaining = Math.max(0, effectiveCredits - usedThisMonth);
   const adjusted = adjustedMonthlyCredits !== undefined && adjustedMonthlyCredits !== baseMonthlyCredits;
 
+  // Cycle-aware acknowledgment key so we only pulse once per cycle
+  const cycleKey = React.useMemo(() => {
+    const y = cycleEndDate.getFullYear();
+    const m = cycleEndDate.getMonth() + 1;
+    return `credit-coin-ack-${y}-${m}`;
+  }, [cycleEndDate]);
+
+  const [open, setOpen] = useState(false);
+  const [silenced, setSilenced] = useState(false);
+  const [ack, setAck] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem(cycleKey) === "1";
+    } catch {
+      return false;
+    }
+  });
+
+  // Allow other parts of the app (e.g., booking) to programmatically open this
+  useEffect(() => {
+    const listener = () => {
+      setOpen(true);
+      setSilenced(true);
+      try {
+        localStorage.setItem(cycleKey, "1");
+        setAck(true);
+      } catch {}
+    };
+    window.addEventListener("prgrss:show-credits", listener);
+    return () => window.removeEventListener("prgrss:show-credits", listener);
+  }, [cycleKey]);
+
+  // Slower pulse; stop after first interaction, but repulse when out of credits
+  const shouldPulse = !silenced && (!ack || remaining === 0);
+
+  const handleOpenChange = (next: boolean) => {
+    setOpen(next);
+    if (next) {
+      setSilenced(true);
+      try {
+        localStorage.setItem(cycleKey, "1");
+        setAck(true);
+      } catch {}
+    }
+  };
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <button
           aria-label="Show monthly call credits"
@@ -49,9 +93,10 @@ export const CreditCoin: React.FC<CreditCoinProps> = ({
             "h-12 w-12 md:h-14 md:w-14",
             // Coin look with brand tokens
             "bg-gradient-to-br from-primary/90 to-primary/60 text-primary-foreground",
-            // Glow + pulse to hint it's interactive
-            "ring-2 ring-primary/40 hover:ring-primary/60 transition-all duration-300",
-            "hover:scale-105 active:scale-95 animate-pulse",
+            // Glow + subtle pulse to hint it's interactive
+            "ring-2 ring-primary/40 hover:ring-primary/60 transition-all duration-300 motion-reduce:animate-none",
+            "hover:scale-105 active:scale-95",
+            shouldPulse ? "motion-safe:animate-[pulse_3.5s_cubic-bezier(0.4,0,0.6,1)_infinite]" : "animate-none",
             className
           )}
         >
