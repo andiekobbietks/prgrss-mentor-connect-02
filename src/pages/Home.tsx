@@ -10,6 +10,7 @@ import { MessageSquare, Calendar, User, Info, BookOpen, ArrowUpDown } from "luci
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { CreditCoin } from "@/components/credits/CreditCoin";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -34,10 +35,27 @@ const Home: React.FC = () => {
       navigate('/call-library');
     }, 3000);
   };
+  const cycleEndDate = React.useMemo(() => {
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth() + 1, 0);
+  }, []);
 
   return (
-    <div className="bg-black min-h-screen pb-20">
-      <HomeCarousel />
+      <div className="bg-black min-h-screen pb-20">
+        <div className="relative">
+        <HomeCarousel />
+        <div className="absolute top-3 right-4 z-20">
+          <TourTarget id="credit-coin">
+            <CreditCoin
+              role="mentee"
+              baseMonthlyCredits={2}
+              adjustedMonthlyCredits={3}
+              usedThisMonth={1}
+              cycleEndDate={cycleEndDate}
+            />
+          </TourTarget>
+        </div>
+      </div>
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
