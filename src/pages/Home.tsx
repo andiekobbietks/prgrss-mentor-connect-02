@@ -10,6 +10,7 @@ import { MessageSquare, Calendar, User, Info, BookOpen, ArrowUpDown } from "luci
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { CreditCoin } from "@/components/credits/CreditCoin";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
