@@ -6,10 +6,13 @@ import { TourTarget } from "./TourTarget";
 import { TourOverlay } from "./TourOverlay";
 import { useTour } from "@/contexts/TourContext";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CreditCoin } from "@/components/credits/CreditCoin";
+import { useCredits } from "@/contexts/CreditsContext";
 
 export default function AppLayout() {
   const location = useLocation();
   const { startTour, isFirstVisit } = useTour();
+  const credits = useCredits();
   
   return (
     <div className="relative min-h-screen bg-black text-white">
@@ -36,7 +39,16 @@ export default function AppLayout() {
             <h1 className="text-2xl tracking-wider font-light">PRGRSS</h1>
           </TourTarget>
         </div>
-        <div className="flex-1 flex justify-end">
+        <div className="flex-1 flex justify-end items-center gap-3">
+          <TourTarget id="credit-coin">
+            <CreditCoin
+              role={credits.role}
+              baseMonthlyCredits={credits.baseMonthlyCredits}
+              adjustedMonthlyCredits={credits.adjustedMonthlyCredits}
+              usedThisMonth={credits.usedThisMonth}
+              cycleEndDate={credits.cycleEndDate}
+            />
+          </TourTarget>
           <Link to="/settings">
             <Settings className="text-white h-6 w-6" />
           </Link>

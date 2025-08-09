@@ -13,6 +13,7 @@ import UserGuide from './pages/UserGuide';
 import LearningAcademy from './pages/LearningAcademy';
 import CallLibrary from './pages/CallLibrary';
 import { TourProvider, useTour } from './contexts/TourContext';
+import { CreditsProvider } from './contexts/CreditsContext';
 import { TourOverlay } from './components/TourOverlay';
 import { SplashScreen } from './components/SplashScreen';
 import { Toaster } from './components/ui/toaster';
@@ -62,7 +63,9 @@ function App() {
   return (
     <Router>
       <TourProvider>
-        <AppContent />
+        <CreditsProvider>
+          <AppContent />
+        </CreditsProvider>
       </TourProvider>
     </Router>
   );
